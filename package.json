@@ -1,0 +1,27 @@
+{
+  "name": "capstone-travel-app",
+  "version": "1.0.0",
+  "description": "Capstone - Travel App Udemy course",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ChrisSku/Capstone-Travel-App.git"
+  },
+  "keywords": [
+    "travelApp",
+    "Udemy"
+  ],
+  "author": "Christian Skupien",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ChrisSku/Capstone-Travel-App/issues"
+  },
+  "homepage": "https://github.com/ChrisSku/Capstone-Travel-App#readme",
+  "devDependencies": {
+    "webpack": "^5.22.0",
+    "webpack-cli": "^4.5.0"
+  }
+}
