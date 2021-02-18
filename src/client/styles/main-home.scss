@@ -1,0 +1,52 @@
+#welcome {
+    color: black;
+    text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
+    text-align: center;
+    font-size: 2em;
+    margin: 0.8em 10% 0;
+    opacity: 1;
+    height: auto;
+    display: none;
+    span.logo {
+        display: flex;
+        justify-content: center;
+        color: white;
+        text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+        img {
+            margin-right: 0.3em;
+            height: 1.2em;
+        }
+    }
+    &.hide {
+        animation: fade-out 1s;
+
+    }
+    &.active {
+        display: block;
+    }
+
+}
+
+form#searchBar {
+    margin-top: 0.7em;
+    text-align: center;
+    &.active {
+        margin-top: 2em;
+    }
+}
+
+
+@keyframes fade-out {
+    from {
+      opacity: 1;
+      height: 4em;
+    }
+    20% {
+        opacity: 0;
+    }
+    to {
+      opacity: 0;
+      height: 1px;
+    }
+  }
+
