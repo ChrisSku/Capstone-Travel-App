@@ -1,7 +1,7 @@
 import { html, render } from 'lit-html'
 import { loader } from './pageLoader'
 
-import '../styles/main-home.scss'
+import /* webpackPrefetch: true */ '../styles/main-home.scss'
 
 const main = document.querySelector('main')!
 const aside = document.querySelector('aside')!

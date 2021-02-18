@@ -3,17 +3,16 @@ import { loader } from './ts/pageLoader'
 const home = () => import('./ts/home')
 const bestPlaces = () => import('./ts/bestPlaces')
 const savedPlaces = () => import('./ts/savedPlaces')
+
+import './styles/base.scss'
+import './styles/header.scss'
+import './styles/loader.scss'
+
 const basePath = (() => {
     let paths = window.location.pathname.split('/')
     paths.pop()
     return paths.join('/')
 })()
-
-console.log(basePath)
-
-import './styles/base.scss'
-import './styles/header.scss'
-import './styles/loader.scss'
 
 let path: string = window.location.pathname
 
@@ -33,9 +32,9 @@ function loadPage() {
     render(loader(), main)
     path = window.location.pathname
     setActiveNav()
-    if (path.endsWith('/best-places'))
+    if (path.endsWith('/best-places.html'))
         return bestPlaces().then((it) => render(it.init(), main))
-    if (path.endsWith('/saved-places'))
+    if (path.endsWith('/saved-places.html'))
         return savedPlaces().then((it) => render(it.init(), main))
     home().then((it) => it.init())
 }

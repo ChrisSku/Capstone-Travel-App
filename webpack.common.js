@@ -33,11 +33,11 @@ module.exports = {
         new HtmlWebpackPlugin({ template: './src/client/views/index.html' }),
         new HtmlWebpackPlugin({
             template: './src/client/views/index.html',
-            filename: 'saved-places'
+            filename: 'saved-places.html'
         }),
         new HtmlWebpackPlugin({
             template: './src/client/views/index.html',
-            filename: 'best-places'
+            filename: 'best-places.html'
         }),
         new MiniCssExtractPlugin({ filename: '[name].css' }),
         new CopyPlugin({
