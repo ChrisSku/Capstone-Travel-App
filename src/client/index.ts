@@ -11,13 +11,14 @@ import './styles/loader.scss'
 let path: string = window.location.pathname
 
 const main = document.querySelector('main')!
-const navLinks = document.getElementsByClassName('nav-container')
+const navbar = document.querySelector('nav')
 
 function setActiveNav() {
-    for (let i = 0; i < navLinks.length; i++) {
-        navLinks[i].getAttribute('href') === path
-            ? navLinks[i].classList.add('active')
-            : navLinks[i].classList.remove('active')
+    const navItems = navbar?.querySelectorAll('.nav-item')!
+    for (let i = 0; i < navItems.length; i++) {
+        navItems[i].getAttribute('href') === path
+            ? navItems[i].classList.add('active')
+            : navItems[i].classList.remove('active')
     }
 }
 
@@ -39,11 +40,11 @@ function movePage(link: string) {
     }
 }
 
-for (let i = 0; i < navLinks.length; i++) {
-    navLinks[i].addEventListener('click', () =>
-        movePage(navLinks[i].getAttribute('href')!)
-    )
-}
+navbar!.addEventListener('click', (e: MouseEvent) => {
+    e.composedPath()
+        .filter((it) => it instanceof HTMLLIElement)
+        .forEach((it: HTMLLIElement) => movePage(it.getAttribute('href')!))
+})
 
 window.onpopstate = loadPage
 loadPage()

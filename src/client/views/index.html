@@ -15,28 +15,37 @@
             </div>
             <nav>
                 <ul>
-                    <div class="nav-container" id="homeLink" href="/">
-                        <li>Home</li>
-                    </div>
-                    <div
-                        class="nav-container"
+                    <li class="nav-item" id="homeLink" href="/">
+                        <div>Home</div>
+                    </li>
+                    <li
+                        class="nav-item"
                         id="bestPlacesLink"
                         href="/best-places"
                     >
-                        <li>Best Places</li>
-                    </div>
-                    <div
-                        class="nav-container"
+                        <div>Best Places</div>
+                    </li>
+                    <li
+                        class="nav-item"
                         id="savedPlacesLink"
                         href="/saved-places"
                     >
-                        <li>Your saved Places</li>
-                    </div>
+                        <div>Your saved Places</div>
+                    </li>
                 </ul>
             </nav>
         </header>
         <main></main>
         <aside>TEST</aside>
         <footer>© 2021 Backpack</footer>
+        <script>
+            // // Check that service workers are supported
+            // if ('serviceWorker' in navigator) {
+            //     // Use the window load event to keep the page load performant
+            //     window.addEventListener('load', () => {
+            //         navigator.serviceWorker.register('/service-worker.js')
+            //     })
+            // }
+        </script>
     </body>
 </html>

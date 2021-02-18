@@ -1,6 +1,6 @@
 header{
     grid-area: header;
-    background-color: hsla(0, 0%, 0%, 0.15);
+    background-color: hsla(0, 0%, 0%, 0.2);
     display: grid;
     padding: 0 5%;
  grid-template-areas: "title" "nav";
@@ -43,14 +43,14 @@ header{
             padding: 0;
             display: flex;
             justify-content: space-around;
-            .nav-container {
+            .nav-item {
                 padding: 10px 15px;
                 border-radius: 10px;
-                li {
+                div {
                     padding: 0 3px;
                    
                 }
-                &.active li{
+                &.active div{
                         border-bottom: 2px solid wheat;
                 }
 

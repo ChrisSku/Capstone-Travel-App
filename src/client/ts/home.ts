@@ -15,11 +15,25 @@ const welcomeScreen = html`<div id="welcome" class="active">
 
 const searchbar = html`<form id="searchBar">
     <label id="searchBarLabel">Search for your next Trip</label>
-    <input id="placeInput" /> <input type="date" id="dateInput" />
-    <input type="submit" id="submitSearch" value="SEARCH" />
+    <fieldset>
+        <label for="placeInput">Where</label>
+        <input id="placeInput" name="placeInput" placeholder="Search Country" />
+    </fieldset>
+    <fieldset>
+        <label for="dateInput">Start Date</label>
+        <input
+            type="date"
+            id="dateInput"
+            name="dateInput"
+            value="${new Date().toISOString().substring(0, 10)}"
+        />
+    </fieldset>
+    <fieldset>
+        <input type="submit" id="submitSearch" value="SEARCH" />
+    </fieldset>
 </form>`
 
-const searchresult = html`<div id="searchResult"></div>`
+const searchresult = html`<div id="searchResult" class="empty"></div>`
 
 const mainTemplate = html`${welcomeScreen}${searchbar}${searchresult}`
 const asideTemplate = html`<div>Popular Places</div>`
@@ -37,9 +51,8 @@ export function init() {
         render(loader(), searchResult!)
     })
 
-    welcome?.addEventListener('animationend', function (e) {
-        console.log(e)
-        if (e.animationName === 'fade-out') {
+    welcome?.addEventListener('animationend', (event) => {
+        if (event.animationName === 'fade-out') {
             welcome?.classList.remove('active')
             searchBar?.classList.add('active')
         }
