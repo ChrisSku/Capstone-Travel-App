@@ -1,0 +1,1 @@
+{"version":3,"sources":["webpack://capstone-travel-app/./src/client/ts/bestPlaces.ts"],"names":["init"],"mappings":"iKAEO,SAASA,IACZ,OAAO,QAAI,I,EAAA,2B,EAAA,2B,uEAAA,E","file":"597-bundle.js","sourcesContent":["import { html, TemplateResult } from 'lit-html'\n\nexport function init(): TemplateResult {\n    return html`<div>BEST PLACES</div>`\n}\n"],"sourceRoot":""}

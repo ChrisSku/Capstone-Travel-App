@@ -1,0 +1,2 @@
+(self.webpackChunkcapstone_travel_app=self.webpackChunkcapstone_travel_app||[]).push([[597],{597:(e,r,a)=>{"use strict";a.r(r),a.d(r,{init:()=>i});var t,p=a(16);function i(){return(0,p.dy)(t||(e=["<div>BEST PLACES</div>"],r=["<div>BEST PLACES</div>"],Object.defineProperty?Object.defineProperty(e,"raw",{value:r}):e.raw=r,t=e));var e,r}}}]);
+//# sourceMappingURL=597-bundle.js.map

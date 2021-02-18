@@ -1,0 +1,1 @@
+{"version":3,"sources":["webpack://capstone-travel-app/./src/client/ts/savedPlaces.ts"],"names":["init"],"mappings":"iKAEO,SAASA,IACZ,OAAO,QAAI,I,EAAA,4B,EAAA,4B,uEAAA,E","file":"446-bundle.js","sourcesContent":["import { html, TemplateResult } from 'lit-html'\n\nexport function init(): TemplateResult {\n    return html`<div>SAVED PLACES</div>`\n}\n"],"sourceRoot":""}
