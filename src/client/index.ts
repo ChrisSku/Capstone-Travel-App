@@ -3,6 +3,13 @@ import { loader } from './ts/pageLoader'
 const home = () => import('./ts/home')
 const bestPlaces = () => import('./ts/bestPlaces')
 const savedPlaces = () => import('./ts/savedPlaces')
+const basePath = (() => {
+    let paths = window.location.pathname.split('/')
+    paths.pop()
+    return paths.join('/')
+})()
+
+console.log(basePath)
 
 import './styles/base.scss'
 import './styles/header.scss'
@@ -16,7 +23,7 @@ const navbar = document.querySelector('nav')
 function setActiveNav() {
     const navItems = navbar?.querySelectorAll('.nav-item')!
     for (let i = 0; i < navItems.length; i++) {
-        navItems[i].getAttribute('href') === path
+        basePath + navItems[i].getAttribute('href') === path
             ? navItems[i].classList.add('active')
             : navItems[i].classList.remove('active')
     }
@@ -26,16 +33,16 @@ function loadPage() {
     render(loader(), main)
     path = window.location.pathname
     setActiveNav()
-    if (path.startsWith('/best-places'))
+    if (path.endsWith('/best-places'))
         return bestPlaces().then((it) => render(it.init(), main))
-    if (path.startsWith('/saved-places'))
+    if (path.endsWith('/saved-places'))
         return savedPlaces().then((it) => render(it.init(), main))
     home().then((it) => it.init())
 }
 
 function movePage(link: string) {
     if (path !== link || path === '/') {
-        history.pushState({}, link.substr(1), link)
+        history.pushState({}, link.substr(1), basePath + link)
         loadPage()
     }
 }
