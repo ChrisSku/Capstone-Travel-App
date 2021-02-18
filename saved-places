@@ -1,7 +1,0 @@
-<!doctype html><html lang="en"><head><meta charset="UTF-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><meta name="viewport" content="width=device-width,initial-scale=1"/><title>Travel-Backpack</title><link rel="shortcut icon" href="favicon.ico" type="image/x-icon"/><script defer="defer" src="main-bundle.js"></script><link href="main.css" rel="stylesheet"></head><body><header><div class="logo"><img src="TravelIcon.svg" alt="Backpack-ICON"/><h1>Backpack</h1></div><nav><ul><li class="nav-item" id="homeLink" href="/"><div>Home</div></li><li class="nav-item" id="bestPlacesLink" href="/best-places"><div>Best Places</div></li><li class="nav-item" id="savedPlacesLink" href="/saved-places"><div>Your saved Places</div></li></ul></nav></header><main></main><aside>TEST</aside><footer>© 2021 Backpack</footer><script>// // Check that service workers are supported
-            // if ('serviceWorker' in navigator) {
-            //     // Use the window load event to keep the page load performant
-            //     window.addEventListener('load', () => {
-            //         navigator.serviceWorker.register('/service-worker.js')
-            //     })
-            // }</script></body></html>
