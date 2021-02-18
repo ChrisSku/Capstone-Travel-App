@@ -20,7 +20,7 @@ body  {
         "aside"
         "footer";
     
-    @media (min-width: 900px) {
+    @media (min-width: 1100px) {
         grid-template-areas: "header header"
         "main aside"
         "footer footer";
@@ -30,8 +30,6 @@ body  {
 
     main {
         grid-area: main;
-        justify-self: center;
-        width: 100%;
     }
 
     aside {
@@ -45,4 +43,11 @@ body  {
         font-size: 0.8em;
         
     }
+}
+
+input {
+    font-weight: 500;
+    font-size: 500 1.1em;
+    font-family: 'Noto Sans', sans-serif;
+    background: none;
 }

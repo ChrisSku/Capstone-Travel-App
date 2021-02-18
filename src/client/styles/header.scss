@@ -3,7 +3,7 @@ header{
     background-color: hsla(0, 0%, 0%, 0.2);
     display: grid;
     padding: 0 5%;
- grid-template-areas: "title" "nav";
+    grid-template-areas: "title" "nav";
 
     @media (min-width: 768px) {
         grid-template-columns: min-content 20% auto;
@@ -18,9 +18,9 @@ header{
         justify-items: center;
         margin: 0.5em 0 0em;
 
-    @media (min-width: 768px) {
-        margin: 1em 0;
-    }
+        @media (min-width: 768px) {
+            margin: 1em 0;
+        }
 
         h1 {
             font-size: 1.4em;
@@ -44,7 +44,7 @@ header{
             display: flex;
             justify-content: space-around;
             .nav-item {
-                padding: 10px 15px;
+                padding: 15px 20px;
                 border-radius: 10px;
                 div {
                     padding: 0 3px;
@@ -57,6 +57,18 @@ header{
                 &:hover {
                     cursor: pointer;
                     background-color: hsla(0, 0%, 100%, 0.3);
+                }
+
+            }
+            @media (min-width: 768px) {
+                justify-content: flex-end;
+                .nav-item {
+                    &:nth-child(even) {
+                        margin: 0 4%;
+                    }
+                    &:last-child {
+                        margin-right: 3%
+                    }
                 }
             }
         }

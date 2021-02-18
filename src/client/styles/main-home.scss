@@ -1,12 +1,18 @@
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans&display=swap');
+main {
+    display: grid;
+    justify-content: center;
+    padding: 0.8em 8%;
+    justify-self: stretch;
+    grid-template-rows: min-content min-content;
+    grid-template-columns: 1fr;
+    gap: 0.8em;
+}
 
 #welcome {
     color: black;
     text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
     text-align: center;
     font-size: 2em;
-    margin: 0.8em 10% 0;
-    opacity: 1;
     height: auto;
     display: none;
     span.logo {
@@ -32,9 +38,12 @@
 form#searchBar {
     justify-content: center;
     display: grid;
-    margin: 1em 10%;
-    justify-items: center;
     grid-template-rows: min-content repeat(3, 4em);
+    grid-template-columns: 1fr;
+    justify-items: center;
+    max-width: 300px;
+    width: 100%;
+    margin: 0 auto;
 
     #searchBarLabel {
         color: black;
@@ -53,11 +62,6 @@ form#searchBar {
         height: 100%;
         padding: 0;
 
-        &:first-of-type {
-            border-top-left-radius: 8px;
-            border-top-right-radius: 8px;
-        }
-
         label {
             display: block;
             margin-left: 1em;
@@ -67,16 +71,17 @@ form#searchBar {
         }
 
         input {
-            font-weight: 500;
-            font-size: 500 1.1em;
-            font-family: 'Noto Sans', sans-serif;
-            background: none;
             margin-left: 1em;
             margin-right: 1em;
             border: none;
             &:focus {
                 outline: none;
             }
+        }
+
+        &:first-of-type {
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
         }
 
         &:last-of-type {
@@ -99,15 +104,13 @@ form#searchBar {
         }
     }
 
-    &.active {
-        margin-top: 2.6em;
-    }
-
     @media (min-width: 768px) {
         grid-template-rows: min-content 4em;
         grid-template-columns:  1fr 1fr 1fr;
         grid-template-areas: "searchBarLabel searchBarLabel searchBarLabel"
         "placeInput dateInput submitSearch";
+        max-width: 900px;
+        
 
         #searchBarLabel { 
             grid-area: searchBarLabel;
@@ -126,14 +129,12 @@ form#searchBar {
         }
 
     }
-}
 
-#searchResult {
-    &.empty {
-        min-height: 150px;
+    &.active {
+        margin-top: 0.8em;
     }
-}
 
+}
 
 @keyframes fade-out {
     from {
