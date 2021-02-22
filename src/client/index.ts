@@ -33,9 +33,9 @@ function loadPage() {
     path = window.location.pathname
     setActiveNav()
     if (path.endsWith('/best-places.html'))
-        return bestPlaces().then((it) => render(it.init(), main))
+        return bestPlaces().then((it) => it.init())
     if (path.endsWith('/saved-places.html'))
-        return savedPlaces().then((it) => render(it.init(), main))
+        return savedPlaces().then((it) => it.init())
     home().then((it) => it.init())
 }
 
@@ -54,3 +54,7 @@ navbar!.addEventListener('click', (e: MouseEvent) => {
 
 window.onpopstate = loadPage
 loadPage()
+
+document
+    .getElementById('pixabaylogo')
+    ?.addEventListener('click', () => window.open('https://pixabay.com'))

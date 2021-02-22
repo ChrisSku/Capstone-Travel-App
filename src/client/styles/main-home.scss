@@ -1,16 +1,6 @@
-main {
-    display: grid;
-    justify-content: center;
-    padding: 0.8em 8%;
-    justify-self: stretch;
-    grid-template-rows: min-content min-content;
-    grid-template-columns: 1fr;
-    gap: 0.8em;
-}
-
 #welcome {
     color: black;
-    text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
+    text-shadow: -0.5px 0 white, 0 0.5px white, 0.5px 0 white, 0 -0.5px white;
     text-align: center;
     font-size: 2em;
     height: auto;
@@ -19,7 +9,7 @@ main {
         display: flex;
         justify-content: center;
         color: white;
-        text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+        text-shadow: -0.5px 0 black, 0 0.5px black, 0.5px 0 black, 0 -0.5px black;
         img {
             margin-right: 0.3em;
             height: 1.2em;
@@ -38,7 +28,7 @@ main {
 form#searchBar {
     justify-content: center;
     display: grid;
-    grid-template-rows: min-content repeat(3, 4em);
+    grid-template-rows: min-content min-content;
     grid-template-columns: 1fr;
     justify-items: center;
     max-width: 300px;
@@ -47,87 +37,89 @@ form#searchBar {
 
     #searchBarLabel {
         color: black;
-        text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
+        text-shadow: -0.5px 0 white, 0 0.5px white, 0.5px 0 white, 0 -0.5px white;
         text-align: center;
         font-size: 1.2em;
         margin-bottom: 0.3em;
     }
 
-    fieldset {
-        display: flex;
-        flex-direction: column;
-        background-color: hsla(0, 0%, 100%, 0.6);
-        border: 1px solid #666;
+    .formContainer {
+        display: grid;
+        grid-template-rows: repeat(4, 4em);
         width: 100%;
-        height: 100%;
-        padding: 0;
+        box-shadow: 0px 2px 8px #666;
+        border-radius: 8px;
 
-        label {
-            display: block;
-            margin-left: 1em;
-            margin-top: 0.4em;
-            color: hsl(0, 0%, 30%);
-            text-shadow: none;
-        }
+        fieldset {
+            display: flex;
+            flex-direction: column;
+            background-color: hsla(0, 0%, 100%, 0.6);
+            border: 1px solid #666;
+            height: 100%;
+            padding: 0;
+            margin: 0;
 
-        input {
-            margin-left: 1em;
-            margin-right: 1em;
-            border: none;
-            &:focus {
-                outline: none;
-            }
-        }
-
-        &:first-of-type {
-            border-top-left-radius: 8px;
-            border-top-right-radius: 8px;
-        }
-
-        &:last-of-type {
-            background-color: hsla(231, 29%, 33%, 0.8);
-            border-bottom-left-radius: 8px;
-            border-bottom-right-radius: 8px;
-
-            &:hover {
-                background-color: hsla(231, 29%, 23%, 0.85);
-                box-shadow: 0px 0px 10px 0px hsl(0, 0%, 20%) inset;
+            label {
+                display: block;
+                margin-left: 1em;
+                margin-top: 0.4em;
+                color: hsl(0, 0%, 30%);
+                text-shadow: none;
             }
 
             input {
-                margin-left: 0;
-                color: white;
-                height: 100%;
-                width: 100%;
-                cursor: pointer;
+                margin-left: 1em;
+                margin-right: 1em;
+                border: none;
+                &:focus {
+                    outline: none;
+                }
+            }
+
+            &:first-of-type {
+                border-top-left-radius: 8px;
+                border-top-right-radius: 8px;
+            }
+
+            &:last-of-type {
+                background-color: hsla(231, 29%, 33%, 0.8);
+                border-bottom-left-radius: 8px;
+                border-bottom-right-radius: 8px;
+
+                &:hover {
+                    background-color: hsla(231, 29%, 23%, 0.85);
+                    box-shadow: 0px 0px 10px 0px hsl(0, 0%, 20%) inset;
+                }
+
+                input {
+                    margin-left: 0;
+                    color: white;
+                    height: 100%;
+                    width: 100%;
+                    cursor: pointer;
+                }
             }
         }
     }
 
     @media (min-width: 768px) {
-        grid-template-rows: min-content 4em;
-        grid-template-columns:  1fr 1fr 1fr;
-        grid-template-areas: "searchBarLabel searchBarLabel searchBarLabel"
-        "placeInput dateInput submitSearch";
         max-width: 900px;
-        
+        .formContainer {
+            grid-template-rows: 4em;
+            grid-template-columns:  repeat(4, 1fr);
 
-        #searchBarLabel { 
-            grid-area: searchBarLabel;
+            fieldset:first-of-type {
+                border-top-left-radius: 8px;
+                border-bottom-left-radius: 8px;
+                border-top-right-radius: 0;
+            }
+
+            fieldset:last-of-type{
+                border-bottom-left-radius: 0;
+                border-bottom-right-radius: 8px;
+                border-top-right-radius: 8px;
+            }
         }
-
-        fieldset:first-of-type {
-            border-top-left-radius: 8px;
-            border-bottom-left-radius: 8px;
-            border-top-right-radius: 0;
-        }
-
-        fieldset:last-of-type{
-            border-bottom-left-radius: 0;
-            border-bottom-right-radius: 8px;
-            border-top-right-radius: 8px;
-        }
-
     }
 
     &.active {
