@@ -1,69 +1,14 @@
 import { html, render, TemplateResult } from 'lit-html'
+const tripDialog = () => import('./tripDialog')
+import * as api from './apiHandler'
 
-import /* webpackPrefetch: true */ '../styles/trip.scss'
+import '../styles/trip.scss'
 
-const BACKEND_BASE_URL = 'http://localhost:3000'
-
-interface LocationData {
-    name: string
-    countryName: string
-    lat: string
-    lng: string
-    population: number
-    countryCode: string
-    fclName: string
-}
-
-interface WeatherIcon {
-    icon: string
-    description: string
-}
-
-interface DateWeatherData {
-    max_temp: number
-    temp: number
-    min_temp: number
-    datetime: string
-    weather: WeatherIcon
-}
-
-interface WeatherData {
-    timezone: string
-    data: DateWeatherData[]
-}
-
-interface PictureData {
-    webformatURL: string
-    largeImageURL: string
-}
-
-function getLocationData(location: string) {
-    const url = `${BACKEND_BASE_URL}/trips/locations?location=${location}`
-    return fetch(url).then((it) => it.json())
-}
-
-function getWeatherData({
-    name: location,
-    countryCode,
-    lat,
-    lng: long
-}: LocationData) {
-    const params = new URLSearchParams({ location, countryCode, lat, long })
-    const url = `${BACKEND_BASE_URL}/trips/weather?${params}`
-    return fetch(url).then((it) => it.json())
-}
-
-function getPictures({ name: location, fclName }: LocationData) {
-    const params = new URLSearchParams({
-        location,
-        fclName: fclName.split(',')[0]
-    })
-    const url = `${BACKEND_BASE_URL}/trips/pictures?${params}`
-    return fetch(url).then((it) => it.json())
-}
-
-const getTripHtml = ({ name, countryName }: LocationData, key: string) =>
+const getTripHtml = ({ name, countryName }: api.LocationData, key: string) =>
     html`<div id=${key} class="trip-element huge">
+        <div class="trip-actions" id="buttonCountainer">
+            <button id="addToTrip">+ Add to Trip</button>
+        </div>
         <div class="country-header">${countryName}</div>
         <div class="location-name">${name}</div>
         <label class="weather-label">Weather</label>
@@ -73,7 +18,7 @@ const getTripHtml = ({ name, countryName }: LocationData, key: string) =>
     </div>`
 
 const getMediumTripHtml = (
-    { name, countryName }: LocationData,
+    { name, countryName }: api.LocationData,
     key: string,
     active: boolean = false
 ) =>
@@ -84,10 +29,10 @@ const getMediumTripHtml = (
     </div>`
 
 function renderWeather(
-    weather: WeatherData,
+    weather: api.WeatherData,
     element: Element | DocumentFragment
 ) {
-    const weatherItem = (it: DateWeatherData) =>
+    const weatherItem = (it: api.DateWeatherData) =>
         html`<div class="weather-item">
             <div class="date">
                 ${new Date(it.datetime).toLocaleDateString()}
@@ -106,14 +51,14 @@ function renderWeather(
     )
 }
 
-function renderPictureGalery(pictures: PictureData[], galery: HTMLElement) {
-    const pictureHtml = (picture: PictureData) =>
+function renderPictureGalery(pictures: api.PictureData[], galery: HTMLElement) {
+    const pictureHtml = (picture: api.PictureData) =>
         html`<img src="${picture.webformatURL}" />`
     render(pictures.map(pictureHtml), galery)
 }
 
 function renderPicture(
-    pictures: PictureData[],
+    pictures: api.PictureData[],
     element: HTMLElement,
     galery: HTMLElement | null = null
 ) {
@@ -131,33 +76,37 @@ export async function renderTrip(
     key: string,
     element: Element | DocumentFragment
 ) {
-    const locationData: LocationData = await getLocationData(location)
-    // getWeatherData(locationData)
+    const locationData: api.LocationData = await api.getLocationData(location)
     render(getTripHtml(locationData, key), element)
     const tripElementContainter = document.getElementById(key)
     const pictureGalery = tripElementContainter?.querySelector(
         '.picture-galery'
     ) as HTMLElement
-    getPictures(locationData).then((it) =>
+    api.getPictures(locationData).then((it) =>
         renderPicture(it, tripElementContainter!, pictureGalery)
     )
     const weatherContainer = tripElementContainter?.querySelector(
         '.weather-data'
     )
-    getWeatherData(locationData).then((it: WeatherData) =>
+    api.getWeatherData(locationData).then((it: api.WeatherData) =>
         renderWeather(it, weatherContainer!)
     )
+    const addTripButton = document.getElementById('addToTrip')
+    addTripButton?.addEventListener('click', () =>
+        tripDialog().then((it) =>
+            it.open(locationData.name, startDate, endDate)
+        )
+    )
+    tripDialog().then((it) => it.open(locationData.name, startDate, endDate))
 }
 
 export async function renderTripList(
     locations: string[],
-    startDate: string,
-    endDate: string,
     element: Element | DocumentFragment
 ) {
     const trips: TemplateResult[] = []
     for (let index = 0; index < locations.length; index++) {
-        const locationData = await getLocationData(locations[index])
+        const locationData = await api.getLocationData(locations[index])
         const currentLocation = window.location.hash.substr(1)
         trips.push(
             getMediumTripHtml(
@@ -168,13 +117,13 @@ export async function renderTripList(
         )
         render(trips, element)
         const tripElementContainter = document.getElementById(index + 'place')
-        getPictures(locationData).then((it) =>
+        api.getPictures(locationData).then((it) =>
             renderPicture(it, tripElementContainter!)
         )
         const weatherContainer = tripElementContainter?.querySelector(
             '.weather-data'
         )
-        getWeatherData(locationData).then((it: WeatherData) =>
+        api.getWeatherData(locationData).then((it) =>
             renderWeather(it, weatherContainer!)
         )
     }

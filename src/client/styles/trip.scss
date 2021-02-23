@@ -1,5 +1,5 @@
 .trip-element {
-    background-color: hsla(0, 0%, 100%, 0.3);
+    background-color: hsla(0, 0%, 0%, 0.4);
     box-shadow: 1px 1px 4px 0 black;
     border-radius: 8px;
     padding: 10px;
@@ -10,13 +10,40 @@
     padding-left: 15px;
 
     grid-template-rows: 40px min-content min-content 1fr;
-    grid-template-areas: "." "country-header" "location-name" "weather";
+    grid-template-areas: 'actions' 'country-header' 'location-name' 'weather';
+    background-blend-mode: saturation;
+
+    .trip-actions {
+        grid-area: actions;
+        display: flex;
+        align-items: start;
+        justify-content: flex-end;
+        button {
+            border: none;
+            background-color: hsla(0, 0%, 100%, 0.7);
+            box-shadow: 0 0 4px 0 black;
+            padding: 4px 6px;
+            border-radius: 8px;
+            color: #000;
+            font-weight: bold;
+            &:hover {
+                background-color: hsla(0, 0%, 100%, 0.6);
+            }
+
+            &:focus {
+                outline: none;
+            }
+            &:active {
+                box-shadow: 0 0 4px 0 black inset;
+            }
+        }
+    }
 
     .country-header {
         grid-area: country-header;
         font-size: 0.7em;
     }
-    
+
     .location-name {
         grid-area: location-name;
         font-size: 2.4em;
@@ -30,14 +57,19 @@
         padding: 1em 0;
         .weather-item {
             display: grid;
-            background-image: linear-gradient( 90deg,  rgba(255, 255, 255, 0.75) 30%, rgba(255, 255, 255, 0));
-            grid-template-areas: "w-date w-icon"
-            "w-temp w-icon"
-            "w-temp-range w-temp-range";
+            background-image: linear-gradient(
+                90deg,
+                rgba(255, 255, 255, 0.75) 30%,
+                rgba(255, 255, 255, 0)
+            );
+            grid-template-areas:
+                'w-date w-icon'
+                'w-temp w-icon'
+                'w-temp-range w-temp-range';
             padding: 8px;
             border-radius: 8px;
             column-gap: 8px;
-            &:nth-child(even){
+            &:nth-child(even) {
                 margin: 0 12px;
             }
             color: hsl(0, 0%, 25%);
@@ -58,30 +90,25 @@
         }
     }
 
-
-    &.small {
-
-    }
-    &.medium{
+    &.medium {
         grid-template-rows: 40px min-content min-content 1fr;
-        @media (min-width: 768px) and (max-width: 1099px )  {
+        @media (min-width: 768px) and (max-width: 1099px) {
             grid-template-rows: 1fr min-content min-content;
             grid-template-columns: 200px auto;
-            grid-template-areas: ". weather" "country-header weather" "location-name weather";
+            grid-template-areas: 'actions weather' 'country-header weather' 'location-name weather';
         }
-        @media (min-width: 1600px)  {
+        @media (min-width: 1600px) {
             grid-template-rows: 1fr min-content min-content;
             grid-template-columns: 200px auto;
-            grid-template-areas: ". weather" "country-header weather" "location-name weather";
+            grid-template-areas: 'actions weather' 'country-header weather' 'location-name weather';
         }
-
     }
 
     &.huge {
         min-height: 500px;
         height: 60vh;
         grid-template-rows: 40px min-content min-content min-content min-content min-content min-content 1fr;
-        grid-template-areas: "." "country-header" "location-name" "weather-label" "weather" "galery-label" "picture-galery" "content";
+        grid-template-areas: 'actions' 'country-header' 'location-name' 'weather-label' 'weather' 'galery-label' 'picture-galery' 'content';
 
         .weather-label {
             margin-top: 8px;

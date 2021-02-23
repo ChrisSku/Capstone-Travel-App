@@ -9,7 +9,8 @@
         display: flex;
         justify-content: center;
         color: white;
-        text-shadow: -0.5px 0 black, 0 0.5px black, 0.5px 0 black, 0 -0.5px black;
+        text-shadow: -0.5px 0 black, 0 0.5px black, 0.5px 0 black,
+            0 -0.5px black;
         img {
             margin-right: 0.3em;
             height: 1.2em;
@@ -17,12 +18,10 @@
     }
     &.hide {
         animation: fade-out 1s;
-
     }
     &.active {
         display: block;
     }
-
 }
 
 form#searchBar {
@@ -37,7 +36,8 @@ form#searchBar {
 
     #searchBarLabel {
         color: black;
-        text-shadow: -0.5px 0 white, 0 0.5px white, 0.5px 0 white, 0 -0.5px white;
+        text-shadow: -0.5px 0 white, 0 0.5px white, 0.5px 0 white,
+            0 -0.5px white;
         text-align: center;
         font-size: 1.2em;
         margin-bottom: 0.3em;
@@ -106,7 +106,7 @@ form#searchBar {
         max-width: 900px;
         .formContainer {
             grid-template-rows: 4em;
-            grid-template-columns:  repeat(4, 1fr);
+            grid-template-columns: repeat(4, 1fr);
 
             fieldset:first-of-type {
                 border-top-left-radius: 8px;
@@ -114,7 +114,7 @@ form#searchBar {
                 border-top-right-radius: 0;
             }
 
-            fieldset:last-of-type{
+            fieldset:last-of-type {
                 border-bottom-left-radius: 0;
                 border-bottom-right-radius: 8px;
                 border-top-right-radius: 8px;
@@ -125,20 +125,18 @@ form#searchBar {
     &.active {
         margin-top: 0.8em;
     }
-
 }
 
 @keyframes fade-out {
     from {
-      opacity: 1;
-      height: 4em;
+        opacity: 1;
+        height: 4em;
     }
     20% {
         opacity: 0;
     }
     to {
-      opacity: 0;
-      height: 1px;
+        opacity: 0;
+        height: 1px;
     }
-  }
-
+}

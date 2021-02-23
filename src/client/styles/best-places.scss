@@ -2,20 +2,20 @@
     padding-left: 2em;
     font-size: 1.4em;
 }
-.popular-container{
+.popular-container {
     display: grid;
     grid-template-columns: 1fr;
     overflow-y: scroll;
 
     max-height: 400px;
 
-    @media (min-width:1100px) {
+    @media (min-width: 1100px) {
         max-height: 75vh;
     }
     .trip-element {
         margin: 9px;
 
-        &:hover{
+        &:hover {
             cursor: pointer;
             filter: brightness(1.1);
             box-shadow: 2px 2px 8px 0 black;

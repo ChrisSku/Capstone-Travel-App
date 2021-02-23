@@ -1,17 +1,16 @@
-header{
+header {
     grid-area: header;
     background-color: hsla(0, 0%, 0%, 0.2);
     box-shadow: 0px 1px 8px #666;
     display: grid;
     padding: 0 5%;
-    grid-template-areas: "title" "nav";
+    grid-template-areas: 'title' 'nav';
 
     @media (min-width: 768px) {
         grid-template-columns: min-content 20% auto;
-        grid-template-areas: "title . nav";
+        grid-template-areas: 'title . nav';
         align-items: center;
     }
-
 
     .logo {
         display: grid;
@@ -36,7 +35,7 @@ header{
         }
     }
 
-    nav{
+    nav {
         grid-area: nav;
         ul {
             list-style-type: none;
@@ -49,17 +48,15 @@ header{
                 border-radius: 10px;
                 div {
                     padding: 0 3px;
-                   
                 }
-                &.active div{
-                        border-bottom: 2px solid wheat;
+                &.active div {
+                    border-bottom: 2px solid wheat;
                 }
 
                 &:hover {
                     cursor: pointer;
                     background-color: hsla(0, 0%, 100%, 0.3);
                 }
-
             }
             @media (min-width: 768px) {
                 justify-content: flex-end;
@@ -68,11 +65,10 @@ header{
                         margin: 0 4%;
                     }
                     &:last-child {
-                        margin-right: 3%
+                        margin-right: 3%;
                     }
                 }
             }
         }
-
     }
 }

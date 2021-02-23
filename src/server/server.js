@@ -32,10 +32,14 @@ app.get('/trips/weather', async (req, res) => {
     const lat = req.query.lat
     const long = req.query.long
     let weatherData
-    if (location)
-        weatherData = await weatherbit.forecastByCity(location, countryCode)
-    if (!weatherData && lat && long)
+    try {
+        if (location)
+            weatherData = await weatherbit.forecastByCity(location, countryCode)
+        if (!weatherData && lat && long)
+            weatherData = await weatherbit.forecastByLocation(lat, long)
+    } catch (_) {
         weatherData = await weatherbit.forecastByLocation(lat, long)
+    }
     res.json(weatherData)
 })
 
@@ -43,13 +47,23 @@ app.get('/trips/pictures', async (req, res) => {
     const location = req.query.location
     const fclName = req.query.fclName
     let pictureData = []
-    if (location) pictureData = await pixabay.getPicturesByName(location)
-    if (!pictureData.length && fclName)
+    try {
+        if (location) pictureData = await pixabay.getPicturesByName(location)
+        if (!pictureData.length && fclName)
+            pictureData = await pixabay.getPicturesByName(fclName)
+    } catch (_) {
+        console.log(fclName)
         pictureData = await pixabay.getPicturesByName(fclName)
+    }
     res.json(pictureData)
 })
 
-app.post('/trips', async (req, res) => {})
+const tripsData = { 'America 🇺🇸': {}, 'Europe 🇪🇺': {} }
+
+app.get('/trips/names', async (req, res) => {
+    res.json(Object.keys(tripsData))
+})
+app.post('/trips/names', async (req, res) => {})
 
 app.listen(port, () =>
     console.log(`Example app listening on port http://localhost:${port}/ !\n`)

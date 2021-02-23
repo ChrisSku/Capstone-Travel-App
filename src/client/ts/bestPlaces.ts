@@ -1,8 +1,7 @@
 import { html, render } from 'lit-html'
 import { renderTripList, converDataSring, renderTrip } from './tripData'
-import { loader } from './pageLoader'
 
-import /* webpackPrefetch: true */ '../styles/best-places.scss'
+import '../styles/best-places.scss'
 
 const BACKEND_BASE_URL = 'http://localhost:3000'
 
@@ -24,12 +23,7 @@ export async function renderBestPlaces() {
     ).then((it) => it.json())
     const popularContainer = document.getElementById('popularContainer')!
     if (!popularContainer.textContent?.includes('Madrid'))
-        renderTripList(
-            bestPlaces,
-            converDataSring(startDate),
-            converDataSring(endDate),
-            popularContainer
-        )
+        renderTripList(bestPlaces, popularContainer)
 }
 
 function renderCurrentBestPlace(place: string) {
@@ -46,5 +40,4 @@ export async function init() {
     window.location.hash = 'Madrid'
     renderBestPlaces()
     renderCurrentBestPlace('Madrid')
-    // render(asideTemplate, aside)
 }
