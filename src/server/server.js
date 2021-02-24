@@ -58,12 +58,27 @@ app.get('/trips/pictures', async (req, res) => {
     res.json(pictureData)
 })
 
-const tripsData = { 'America 🇺🇸': {}, 'Europe 🇪🇺': {} }
+const tripsData = { 'America 🇺🇸': [], 'Europe 🇪🇺': [] }
 
 app.get('/trips/names', async (req, res) => {
     res.json(Object.keys(tripsData))
 })
-app.post('/trips/names', async (req, res) => {})
+app.put('/trips/names', async (req, res) => {
+    if (tripsData[req.body.name])
+        res.status(409).send(req.body.name + ' does already exists!')
+    tripsData[req.body.name] = []
+    res.json(Object.keys(tripsData))
+})
+
+app.put('/trips/names/:name', async (req, res) => {
+    tripsData[req.params.name].push(req.body)
+    console.log(tripsData)
+    res.send()
+})
+
+app.get('/trips/names/:name', async (req, res) => {
+    res.json(tripsData[req.params.name])
+})
 
 app.listen(port, () =>
     console.log(`Example app listening on port http://localhost:${port}/ !\n`)

@@ -32,10 +32,9 @@ interface PictureData {
     largeImageURL: string
 }
 
-function getLocationData(location: string) {
-    const url = `${BACKEND_BASE_URL}/trips/locations?location=${location}`
-    return fetch(url).then((it) => it.json())
-}
+const locationDataUrl = `${BACKEND_BASE_URL}/trips/locations?location=`
+const getLocationData = (location: string) =>
+    fetch(locationDataUrl + location).then((it) => it.json())
 
 function getWeatherData({
     name: location,
@@ -57,9 +56,27 @@ function getPictures({ name: location, fclName }: LocationData) {
     return fetch(url).then((it) => it.json())
 }
 
-function getSavedTrips(): Promise<string[]> {
+function getSavedTripNames(): Promise<string[]> {
     const url = `${BACKEND_BASE_URL}/trips/names`
     return fetch(url).then((it) => it.json())
+}
+
+function saveTripName(name: string): Promise<string[]> {
+    const url = `${BACKEND_BASE_URL}/trips/names`
+    return fetch(url, {
+        method: 'PUT',
+        body: JSON.stringify({ name }),
+        headers: { 'Content-Type': 'application/json' }
+    }).then((it) => it.json())
+}
+
+function saveTripByName(name: string, data: any) {
+    const url = `${BACKEND_BASE_URL}/trips/names/${name}`
+    fetch(url, {
+        method: 'PUT',
+        body: JSON.stringify(data),
+        headers: { 'Content-Type': 'application/json' }
+    })
 }
 
 export {
@@ -70,5 +87,7 @@ export {
     getLocationData,
     getWeatherData,
     getPictures,
-    getSavedTrips
+    getSavedTripNames,
+    saveTripName,
+    saveTripByName
 }

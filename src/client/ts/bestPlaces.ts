@@ -1,22 +1,19 @@
+import { main, aside } from './helperFunctions'
 import { html, render } from 'lit-html'
-import { renderTripList, converDataSring, renderTrip } from './tripData'
+import { renderTripList, renderTrip } from './tripData'
 
 import '../styles/best-places.scss'
 
 const BACKEND_BASE_URL = 'http://localhost:3000'
 
-const main = document.querySelector('main')!
-const aside = document.querySelector('aside')!
-
-const startDate = new Date()
-const endDate = new Date()
-endDate.setDate(endDate.getDate() + 14)
-
 const asideTemplate = html`<div class="popular-header">Popular Places</div>
     <div class="popular-container" id="popularContainer"></div>`
 
+const renderCurrentBestPlace = (place: string) =>
+    renderTrip(place, 'bestSelectedPlace', main())
+
 export async function renderBestPlaces() {
-    render(asideTemplate, aside)
+    render(asideTemplate, aside())
 
     const bestPlaces: string[] = await fetch(
         BACKEND_BASE_URL + '/trips/best-places'
@@ -24,16 +21,6 @@ export async function renderBestPlaces() {
     const popularContainer = document.getElementById('popularContainer')!
     if (!popularContainer.textContent?.includes('Madrid'))
         renderTripList(bestPlaces, popularContainer)
-}
-
-function renderCurrentBestPlace(place: string) {
-    renderTrip(
-        place,
-        converDataSring(startDate),
-        converDataSring(endDate),
-        'bestSelectedPlace',
-        main
-    )
 }
 
 export async function init() {

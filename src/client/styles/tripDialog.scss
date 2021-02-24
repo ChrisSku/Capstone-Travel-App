@@ -38,10 +38,25 @@
 
     .trip-names {
         grid-area: trips;
+
         h4 {
             margin-bottom: 8px;
+            grid-column: 1/3;
         }
+
+        #tripNameContainer {
+            display: grid;
+            grid-template-columns: min-content 1fr;
+            grid-auto-rows: 1fr;
+            align-items: center;
+            input {
+                margin-top: auto;
+                margin-bottom: auto;
+            }
+        }
+
         #createTrip {
+            grid-column: 1/3;
             margin-top: 8px;
             padding-left: 2px;
             border: 1px solid #888;

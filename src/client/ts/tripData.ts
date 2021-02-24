@@ -71,8 +71,6 @@ function renderPicture(
 
 export async function renderTrip(
     location: string,
-    startDate: string,
-    endDate: string,
     key: string,
     element: Element | DocumentFragment
 ) {
@@ -93,11 +91,8 @@ export async function renderTrip(
     )
     const addTripButton = document.getElementById('addToTrip')
     addTripButton?.addEventListener('click', () =>
-        tripDialog().then((it) =>
-            it.open(locationData.name, startDate, endDate)
-        )
+        tripDialog().then((it) => it.open(locationData.name))
     )
-    tripDialog().then((it) => it.open(locationData.name, startDate, endDate))
 }
 
 export async function renderTripList(
@@ -128,6 +123,3 @@ export async function renderTripList(
         )
     }
 }
-
-export const converDataSring = (date: Date) =>
-    date.toISOString().substring(0, 10)

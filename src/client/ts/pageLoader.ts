@@ -1,5 +1,3 @@
-import { html, TemplateResult } from 'lit-html'
+import { html } from 'lit-html'
 
-export function loader(): TemplateResult {
-    return html`<div class="loader"></div>`
-}
+export const loader = () => html`<div class="loader"></div>`
