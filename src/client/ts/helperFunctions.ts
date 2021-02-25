@@ -9,7 +9,9 @@ const addEventListenerById = <K extends keyof HTMLElementEventMap>(
 ): void =>
     document.getElementById(id)?.addEventListener(type, listener, options)
 
-const converDataSring = (date: Date) => date.toISOString().substring(0, 10)
+const converDateToSring = (date: Date) => date.toISOString().substring(0, 10)
+const converStringToLocaledDate = (datetime: string) =>
+    new Date(datetime).toLocaleDateString()
 
 const main = () => document.querySelector('main')!
 const aside = () => document.querySelector('aside')!
@@ -19,13 +21,14 @@ const endDateInput = () => getInputById('endDateInput')
 const getDefaultEndDate = (() => {
     const date = new Date()
     date.setDate(date.getDate() + 14)
-    return converDataSring(date)
+    return converDateToSring(date)
 })()
 
 export {
     getInputById,
     addEventListenerById,
-    converDataSring,
+    converDateToSring,
+    converStringToLocaledDate,
     main,
     aside,
     startDateInput,

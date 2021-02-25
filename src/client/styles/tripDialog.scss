@@ -9,6 +9,7 @@
     color: black;
     text-shadow: none;
     display: grid;
+    grid-template-rows: min-content 1fr;
     justify-items: center;
     grid-template-areas: 'header' 'dates' 'trips' 'actions';
     gap: 1.2em;
@@ -16,6 +17,10 @@
     h3 {
         justify-self: left;
         margin-bottom: 5px;
+        #locationDialog {
+            color: #fff;
+            text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+        }
     }
 
     @media (min-width: 768px) {
@@ -26,6 +31,7 @@
     .trip-data {
         display: grid;
         grid-area: dates;
+        align-self: start;
         gap: 1em;
         grid-template-columns: max-content min-content;
 

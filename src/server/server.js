@@ -60,23 +60,28 @@ app.get('/trips/pictures', async (req, res) => {
 
 const tripsData = { 'America 🇺🇸': [], 'Europe 🇪🇺': [] }
 
-app.get('/trips/names', async (req, res) => {
+app.get('/trips/saved', async (req, res) => {
+    res.json(tripsData)
+})
+
+app.get('/trips/saved/names', async (req, res) => {
     res.json(Object.keys(tripsData))
 })
-app.put('/trips/names', async (req, res) => {
+app.put('/trips/saved/names', async (req, res) => {
     if (tripsData[req.body.name])
-        res.status(409).send(req.body.name + ' does already exists!')
+        return res.status(409).send(req.body.name + ' does already exists!')
+    if (req.body.name === 'names')
+        return res.status(409).send(req.body.name + ' is an key name')
     tripsData[req.body.name] = []
     res.json(Object.keys(tripsData))
 })
 
-app.put('/trips/names/:name', async (req, res) => {
+app.put('/trips/saved/:name', async (req, res) => {
     tripsData[req.params.name].push(req.body)
-    console.log(tripsData)
     res.send()
 })
 
-app.get('/trips/names/:name', async (req, res) => {
+app.get('/trips/saved/:name', async (req, res) => {
     res.json(tripsData[req.params.name])
 })
 

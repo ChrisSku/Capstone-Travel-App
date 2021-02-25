@@ -30,6 +30,13 @@ interface WeatherData {
 interface PictureData {
     webformatURL: string
     largeImageURL: string
+    previewURL: string
+}
+
+type Trip = {
+    location: string
+    startDate: string
+    endDate: string
 }
 
 const locationDataUrl = `${BACKEND_BASE_URL}/trips/locations?location=`
@@ -47,7 +54,7 @@ function getWeatherData({
     return fetch(url).then((it) => it.json())
 }
 
-function getPictures({ name: location, fclName }: LocationData) {
+function getPictures({ name: location, fclName }: any) {
     const params = new URLSearchParams({
         location,
         fclName: fclName.split(',')[0]
@@ -56,13 +63,18 @@ function getPictures({ name: location, fclName }: LocationData) {
     return fetch(url).then((it) => it.json())
 }
 
+function getSavedTrips(): Promise<{ [name: string]: Trip[] }> {
+    const url = `${BACKEND_BASE_URL}/trips/saved`
+    return fetch(url).then((it) => it.json())
+}
+
 function getSavedTripNames(): Promise<string[]> {
-    const url = `${BACKEND_BASE_URL}/trips/names`
+    const url = `${BACKEND_BASE_URL}/trips/saved/names`
     return fetch(url).then((it) => it.json())
 }
 
 function saveTripName(name: string): Promise<string[]> {
-    const url = `${BACKEND_BASE_URL}/trips/names`
+    const url = `${BACKEND_BASE_URL}/trips/saved/names`
     return fetch(url, {
         method: 'PUT',
         body: JSON.stringify({ name }),
@@ -71,8 +83,8 @@ function saveTripName(name: string): Promise<string[]> {
 }
 
 function saveTripByName(name: string, data: any) {
-    const url = `${BACKEND_BASE_URL}/trips/names/${name}`
-    fetch(url, {
+    const url = `${BACKEND_BASE_URL}/trips/saved/${name}`
+    return fetch(url, {
         method: 'PUT',
         body: JSON.stringify(data),
         headers: { 'Content-Type': 'application/json' }
@@ -84,10 +96,12 @@ export {
     WeatherData,
     DateWeatherData,
     PictureData,
+    Trip,
     getLocationData,
     getWeatherData,
     getPictures,
     getSavedTripNames,
     saveTripName,
-    saveTripByName
+    saveTripByName,
+    getSavedTrips
 }

@@ -1,5 +1,5 @@
 import {
-    converDataSring,
+    converDateToSring,
     getInputById,
     main,
     endDateInput,
@@ -71,7 +71,7 @@ export function init() {
     renderBestPlaces()
     render(mainTemplate, main())
 
-    startDateInput().value = converDataSring(new Date())
+    startDateInput().value = converDateToSring(new Date())
     endDateInput().value = getDefaultEndDate
 
     searchForLocation()

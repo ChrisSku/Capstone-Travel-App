@@ -4,7 +4,7 @@ import {
     startDateInput,
     endDateInput,
     getDefaultEndDate,
-    converDataSring
+    converDateToSring
 } from './helperFunctions'
 import { html, render } from 'lit-html'
 import { getSavedTripNames, saveTripName, saveTripByName } from './apiHandler'
@@ -16,11 +16,11 @@ const create = () => {
     return document.getElementById('dialogBackGround')!
 }
 
-const addEvents = (location: string, dialog: HTMLElement) => {
+const addEvents = (dialog: HTMLElement) => {
     dialog.addEventListener('click', (event: MouseEvent) => {
         if (event.target === dialog) closeDialog()
     })
-    addEventListenerById('saveButton', 'click', () => saveTrip(location))
+    addEventListenerById('saveButton', 'click', saveTrip)
     addEventListenerById('closeButton', 'click', closeDialog)
     addEventListenerById('createTrip', 'submit', updateTripNames)
     addEventListenerById('tripNameContainer', 'click', enableSaveButton)
@@ -45,10 +45,10 @@ const getTripNames = async () => {
 }
 
 async function showDialog(location: string, dialog: HTMLElement) {
-    const startDate = startDateInput()?.value || converDataSring(new Date())
+    const startDate = startDateInput()?.value || converDateToSring(new Date())
     const endDate = endDateInput()?.value || getDefaultEndDate
     const content = html`<div class="trip-dialog" id="tripDialog">
-        <h3>Add ${location} to your Trips</h3>
+        <h3>Add <span id="locationDialog">${location}</span> to your Trips</h3>
         <div class="trip-data">
             <label for="startDateDialog">Start Date</label>
             <input type="date" id="startDateDialog" value="${startDate}" />
@@ -80,12 +80,13 @@ async function updateTripNames(event: Event) {
     render(await getTripNames(), document.getElementById('tripNameContainer')!)
 }
 
-function saveTrip(location: string) {
+function saveTrip() {
     const saveButtton = document.getElementById('saveButton')
     if (saveButtton?.classList.contains('disabled')) return
-    const startData = getInputById('startDateDialog').value
-    const endData = getInputById('endDateDialog').value
-    const data = { location, startData, endData }
+    const startDate = getInputById('startDateDialog').value
+    const endDate = getInputById('endDateDialog').value
+    const location = document.getElementById('locationDialog')?.innerText
+    const data = { location, startDate, endDate }
     const radioTripInputs = Array.from(
         document.querySelectorAll("[name='savedTrips']")
     )
@@ -100,5 +101,5 @@ export async function open(location: string) {
     const exists = document.getElementById('dialogBackGround')
     const dialog = exists || create()
     await showDialog(location, dialog)
-    if (!exists) addEvents(location, dialog)
+    if (!exists) addEvents(dialog)
 }

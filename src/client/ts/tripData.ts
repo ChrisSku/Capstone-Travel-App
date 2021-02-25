@@ -1,3 +1,4 @@
+import { converStringToLocaledDate } from './helperFunctions'
 import { html, render, TemplateResult } from 'lit-html'
 const tripDialog = () => import('./tripDialog')
 import * as api from './apiHandler'
@@ -19,8 +20,7 @@ const getTripHtml = ({ name, countryName }: api.LocationData, key: string) =>
 
 const getMediumTripHtml = (
     { name, countryName }: api.LocationData,
-    key: string,
-    active: boolean = false
+    key: string
 ) =>
     html`<div id=${key} class="trip-element medium">
         <div class="country-header">${countryName}</div>
@@ -28,19 +28,20 @@ const getMediumTripHtml = (
         <div class="weather-data"></div>
     </div>`
 
+const getImage = (icon: string) =>
+    `https://www.weatherbit.io/static/img/icons/${icon}.png`
+
 function renderWeather(
     weather: api.WeatherData,
     element: Element | DocumentFragment
 ) {
     const weatherItem = (it: api.DateWeatherData) =>
         html`<div class="weather-item">
-            <div class="date">
-                ${new Date(it.datetime).toLocaleDateString()}
-            </div>
+            <div class="date">${converStringToLocaledDate(it.datetime)}</div>
             <div class="temp">${it.temp}°C</div>
             <div class="temp-range">${it.min_temp}°C - ${it.max_temp}°C</div>
             <img
-                src="img/${it.weather.icon}.png"
+                src=${getImage(it.weather.icon)}
                 alt="${it.weather.description}"
             />
         </div>`
@@ -102,14 +103,7 @@ export async function renderTripList(
     const trips: TemplateResult[] = []
     for (let index = 0; index < locations.length; index++) {
         const locationData = await api.getLocationData(locations[index])
-        const currentLocation = window.location.hash.substr(1)
-        trips.push(
-            getMediumTripHtml(
-                locationData,
-                index + 'place',
-                locationData.name === currentLocation
-            )
-        )
+        trips.push(getMediumTripHtml(locationData, index + 'place'))
         render(trips, element)
         const tripElementContainter = document.getElementById(index + 'place')
         api.getPictures(locationData).then((it) =>
