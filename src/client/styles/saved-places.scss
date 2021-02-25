@@ -1,84 +1,91 @@
+.trip-editor {
+  display: grid;
+
+  h1 {
+    text-align: center;
+  }
+}
+
 .trip-container {
-    display: grid;
-    grid-template-areas: 'header action-button' 'locations locations' 'packing-list packing-list';
-    grid-auto-rows: min-content;
-    grid-template-columns: 1fr max-content;
-    padding: 10px;
-    border-radius: 8px;
-    background-image: linear-gradient(
-        hsla(0, 0%, 0%, 0.4),
-        hsla(0, 0%, 0%, 0.1)
-    );
+  display: grid;
+  grid-template-areas: 'header action-button' 'locations locations' 'packing-list packing-list';
+  grid-auto-rows: min-content;
+  grid-template-columns: 1fr max-content;
+  padding: 10px;
+  border-radius: 8px;
+  background-image: linear-gradient(hsla(0, 0%, 0%, 0.4), hsla(0, 0%, 0%, 0.1));
 
-    &.active {
-        border: 3px solid white;
+  &.active {
+    border: 3px solid white;
+    padding: 7px;
+  }
+
+  h3 {
+    margin-top: 0;
+    margin-left: 16px;
+    grid-area: header;
+  }
+  .action-items {
+    grid-area: action-button;
+    display: flex;
+    height: min-content;
+
+    button[id^='open'],
+    button[id^='delete'] {
+      border: none;
+      background-color: hsla(0, 0%, 100%, 0.9);
+      box-shadow: 0 0 4px 0 black;
+      padding: 4px 6px;
+      border-radius: 8px;
+      color: #000;
+      font-weight: bold;
+      outline: none;
+      &:active {
+        box-shadow: 0 0 4px 2px black inset;
+      }
     }
 
-    h3 {
-        margin-top: 0;
-        grid-area: header;
+    button[id^='delete'] {
+      margin-left: 8px;
+      background-color: hsla(0, 80%, 80%, 0.9);
     }
-    .action-items {
-        grid-area: action-button;
-        display: flex;
-        height: min-content;
+  }
 
-        button[id^='open'],
-        button[id^='delete'] {
-            border: none;
-            background-color: hsla(0, 0%, 100%, 0.9);
-            box-shadow: 0 0 4px 0 black;
-            padding: 4px 6px;
-            border-radius: 8px;
-            color: #000;
-            font-weight: bold;
-            outline: none;
-            &:active {
-                box-shadow: 0 0 4px 2px black inset;
-            }
-        }
+  .locations-container {
+    grid-area: locations;
+    display: flex;
+    overflow-x: scroll;
 
-        button[id^='delete'] {
-            margin-left: 8px;
-            background-color: hsla(0, 80%, 80%, 0.9);
-        }
-    }
+    .location-container {
+      padding: 10px 20px;
+      background-color: hsla(0, 0%, 0%, 0.25);
+      border-radius: 8px;
+      background-blend-mode: saturation;
+      background-position: center;
+      background-size: cover;
 
-    .locations-container {
-        grid-area: locations;
-        display: flex;
-        overflow-x: scroll;
+      &:nth-child(even) {
+        margin: 0 1em;
+      }
+      .loction-name {
+        margin-bottom: 10px;
+      }
 
-        .location-container {
-            padding: 10px 20px;
-            background-color: hsla(0, 0%, 0%, 0.25);
-            border-radius: 8px;
-            background-blend-mode: saturation;
-            background-position: center;
-            background-size: cover;
-
-            &:nth-child(even) {
-                margin: 0 1em;
-            }
-            .loction-name {
-                margin-bottom: 10px;
-            }
-
-            .location-date {
-                font-size: 0.8em;
-                color: hsl(0, 0%, 90%);
-                width: max-content;
-            }
-        }
-    }
-
-    .packing-list {
-        grid-area: packing-list;
-    }
-
-    .empty {
-        width: 100%;
-        text-align: center;
+      .location-date {
+        font-size: 0.8em;
         color: hsl(0, 0%, 90%);
+        width: max-content;
+      }
     }
+  }
+
+  .packing-list {
+    grid-area: packing-list;
+  }
+}
+
+.empty {
+  width: 100%;
+  text-align: center;
+  color: hsl(0, 0%, 90%);
 }
