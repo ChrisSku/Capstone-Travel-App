@@ -58,7 +58,10 @@ app.get('/trips/pictures', async (req, res) => {
     res.json(pictureData)
 })
 
-const tripsData = { 'America 🇺🇸': [], 'Europe 🇪🇺': [] }
+const tripsData = {
+    'America 🇺🇸': { locations: [], packingList: [] },
+    'Europe 🇪🇺': { locations: [], packingList: [] }
+}
 
 app.get('/trips/saved', async (req, res) => {
     res.json(tripsData)
@@ -72,8 +75,13 @@ app.put('/trips/saved/names', async (req, res) => {
         return res.status(409).send(req.body.name + ' does already exists!')
     if (req.body.name === 'names')
         return res.status(409).send(req.body.name + ' is an key name')
-    tripsData[req.body.name] = []
+    tripsData[req.body.name] = { locations: [], packingList: [] }
     res.json(Object.keys(tripsData))
+})
+
+app.put('/trips/saved/:name/locations', async (req, res) => {
+    tripsData[req.params.name].locations.push(req.body)
+    res.send()
 })
 
 app.put('/trips/saved/:name', async (req, res) => {

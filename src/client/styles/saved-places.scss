@@ -1,7 +1,8 @@
 .trip-container {
     display: grid;
-    grid-template-areas: 'header header' 'locations packing-list';
+    grid-template-areas: 'header action-button' 'locations locations' 'packing-list packing-list';
     grid-auto-rows: min-content;
+    grid-template-columns: 1fr max-content;
     padding: 10px;
     border-radius: 8px;
     background-image: linear-gradient(
@@ -17,6 +18,31 @@
         margin-top: 0;
         grid-area: header;
     }
+    .action-items {
+        grid-area: action-button;
+        display: flex;
+        height: min-content;
+
+        button[id^='open'],
+        button[id^='delete'] {
+            border: none;
+            background-color: hsla(0, 0%, 100%, 0.9);
+            box-shadow: 0 0 4px 0 black;
+            padding: 4px 6px;
+            border-radius: 8px;
+            color: #000;
+            font-weight: bold;
+            outline: none;
+            &:active {
+                box-shadow: 0 0 4px 2px black inset;
+            }
+        }
+
+        button[id^='delete'] {
+            margin-left: 8px;
+            background-color: hsla(0, 80%, 80%, 0.9);
+        }
+    }
 
     .locations-container {
         grid-area: locations;
@@ -29,6 +55,7 @@
             border-radius: 8px;
             background-blend-mode: saturation;
             background-position: center;
+            background-size: cover;
 
             &:nth-child(even) {
                 margin: 0 1em;
@@ -47,5 +74,11 @@
 
     .packing-list {
         grid-area: packing-list;
+    }
+
+    .empty {
+        width: 100%;
+        text-align: center;
+        color: hsl(0, 0%, 90%);
     }
 }

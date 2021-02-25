@@ -7,7 +7,11 @@ import {
     converDateToSring
 } from './helperFunctions'
 import { html, render } from 'lit-html'
-import { getSavedTripNames, saveTripName, saveTripByName } from './apiHandler'
+import {
+    getSavedTripNames,
+    saveTripName,
+    saveTripLocationByName
+} from './apiHandler'
 import '../styles/tripDialog.scss'
 
 const create = () => {
@@ -93,7 +97,7 @@ function saveTrip() {
     const checkedValue = radioTripInputs.find(
         (it: HTMLInputElement) => it.checked
     ) as HTMLInputElement
-    saveTripByName(checkedValue.value, data)
+    saveTripLocationByName(checkedValue.value, data)
     closeDialog()
 }
 

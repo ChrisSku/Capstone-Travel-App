@@ -45,7 +45,7 @@ body {
         display: grid;
         justify-content: center;
         grid-template-columns: 1fr;
-        grid-template-rows: min-content;
+        grid-auto-rows: min-content;
         gap: 1em;
         padding: 0.8em 20px;
         min-height: 400px;

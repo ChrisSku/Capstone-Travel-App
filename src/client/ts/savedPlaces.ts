@@ -1,6 +1,12 @@
 import { html, render } from 'lit-html'
 import { main, aside, converStringToLocaledDate } from './helperFunctions'
-import { getSavedTrips, Trip, getPictures, PictureData } from './apiHandler'
+import {
+    getSavedTrips,
+    Location,
+    getPictures,
+    PictureData,
+    Trip
+} from './apiHandler'
 
 import '../styles/saved-places.scss'
 
@@ -13,7 +19,7 @@ const renderMain = () => {
     render(data, main())
 }
 
-const getLocationsTemp = ({ location, startDate, endDate }: Trip) => html`
+const locationsTemp = ({ location, startDate, endDate }: Location) => html`
     <div class="location-container" key=${location}>
         <div class="loction-name">${location}</div>
         <div class="location-date">
@@ -24,14 +30,31 @@ const getLocationsTemp = ({ location, startDate, endDate }: Trip) => html`
         </div>
     </div>
 `
+const packingItemTemp = (packingItem: string) => html`<div>${packingItem}</div>`
 
-const getSavedTripTemp = (item: string, locations: Trip[]) => html`
+const savedTripTemp = (item: string, { locations, packingList }: Trip) => html`
     <div class="trip-container" id=${item}>
         <h3>${item}</h3>
-        <div class="locations-container">
-            ${locations.map(getLocationsTemp)}
+        <div class="action-items">
+            <button id="open-${item}">Open Trip</button>
+            <button id="delete-${item}">DELETE</button>
         </div>
-        <div class="packing-list"></div>
+
+        <div class="locations-container">
+            ${locations.length
+                ? locations.map(locationsTemp)
+                : html`<div class="empty">
+                      No location added to this Trip yet!
+                  </div>`}
+        </div>
+        <div class="packing-list">
+            <h4>Packing List:</h4>
+            ${packingList.length
+                ? packingList.map(packingItemTemp)
+                : html`<div class="empty">
+                      No Items added to your Packlist yet!
+                  </div>`}
+        </div>
     </div>
 `
 const renderLocationPicture = (location: string, tripName: string) => {
@@ -50,9 +73,9 @@ const renderAside = async () => {
     for (const tripName in savedTrips) {
         if (Object.prototype.hasOwnProperty.call(savedTrips, tripName)) {
             const savedTrip = savedTrips[tripName]
-            template.push(getSavedTripTemp(tripName, savedTrip))
+            template.push(savedTripTemp(tripName, savedTrip))
             render(template, aside())
-            savedTrip.forEach((it) =>
+            savedTrip.locations.forEach((it) =>
                 renderLocationPicture(it.location, tripName)
             )
         }

@@ -33,10 +33,15 @@ interface PictureData {
     previewURL: string
 }
 
-type Trip = {
+type Location = {
     location: string
     startDate: string
     endDate: string
+}
+
+type Trip = {
+    locations: Location[]
+    packingList: string[]
 }
 
 const locationDataUrl = `${BACKEND_BASE_URL}/trips/locations?location=`
@@ -63,7 +68,7 @@ function getPictures({ name: location, fclName }: any) {
     return fetch(url).then((it) => it.json())
 }
 
-function getSavedTrips(): Promise<{ [name: string]: Trip[] }> {
+function getSavedTrips(): Promise<{ [name: string]: Trip }> {
     const url = `${BACKEND_BASE_URL}/trips/saved`
     return fetch(url).then((it) => it.json())
 }
@@ -82,8 +87,8 @@ function saveTripName(name: string): Promise<string[]> {
     }).then((it) => it.json())
 }
 
-function saveTripByName(name: string, data: any) {
-    const url = `${BACKEND_BASE_URL}/trips/saved/${name}`
+function saveTripLocationByName(name: string, data: any) {
+    const url = `${BACKEND_BASE_URL}/trips/saved/${name}/locations`
     return fetch(url, {
         method: 'PUT',
         body: JSON.stringify(data),
@@ -97,11 +102,12 @@ export {
     DateWeatherData,
     PictureData,
     Trip,
+    Location,
     getLocationData,
     getWeatherData,
     getPictures,
     getSavedTripNames,
     saveTripName,
-    saveTripByName,
+    saveTripLocationByName,
     getSavedTrips
 }
