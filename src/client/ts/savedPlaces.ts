@@ -128,7 +128,10 @@ export async function init() {
     setActiveTripElement(presetTripName)
     renderMain(savedTrips[presetTripName])
   } else {
-    render(html``, aside())
+    render(
+      html`<div class="empty">No Items added to your Packlist yet!</div>`,
+      aside()
+    )
     render(html`<div class="empty">There are no Trips</div>`, main())
   }
 }

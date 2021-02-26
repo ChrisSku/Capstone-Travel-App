@@ -1,11 +1,4 @@
-import {
-  converDateToSring,
-  getInputById,
-  main,
-  endDateInput,
-  startDateInput,
-  getDefaultEndDate
-} from './helperFunctions'
+import * as _ from './helperFunctions'
 import { html, render } from 'lit-html'
 import { loader } from './pageLoader'
 import { renderTrip } from './tripData'
@@ -43,14 +36,11 @@ const searchbar = html`<form id="searchBar">
   </div>
 </form>`
 
-const searchresult = html`<div id="searchResult"></div>`
-const mainTemplate = html`${welcomeBannerTemp}${searchbar}${searchresult}`
-
-const searchForLocation = () => {
+const addEventListener = () => {
   const searchBar = document.getElementById('searchBar')
   const welcomeBanner = document.getElementById('welcome')
   const searchResult = document.getElementById('searchResult')
-  const placeInput = getInputById('placeInput')
+  const placeInput = _.getInputById('placeInput')
 
   searchBar?.addEventListener('submit', event => {
     event.preventDefault()
@@ -67,12 +57,13 @@ const searchForLocation = () => {
   })
 }
 
+const searchresult = html`<div id="searchResult"></div>`
+const mainTemplate = html`${welcomeBannerTemp}${searchbar}${searchresult}`
+
 export function init() {
   renderBestPlaces()
-  render(mainTemplate, main())
-
-  startDateInput().value = converDateToSring(new Date())
-  endDateInput().value = getDefaultEndDate
-
-  searchForLocation()
+  render(mainTemplate, _.main())
+  _.startDateInput().value = _.converDateToSring(new Date())
+  _.endDateInput().value = _.getDefaultEndDate
+  addEventListener()
 }

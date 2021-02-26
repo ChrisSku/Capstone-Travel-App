@@ -45,7 +45,7 @@ type Trip = {
 }
 
 const locationDataUrl = `${BACKEND_BASE_URL}/trips/locations?location=`
-const getLocationData = (location: string) =>
+const getLocationData = (location: string): Promise<LocationData> =>
   fetch(locationDataUrl + location).then(it => it.json())
 
 function getWeatherData({
@@ -53,13 +53,16 @@ function getWeatherData({
   countryCode,
   lat,
   lng: long
-}: LocationData) {
+}: LocationData): Promise<WeatherData> {
   const params = new URLSearchParams({ location, countryCode, lat, long })
   const url = `${BACKEND_BASE_URL}/trips/weather?${params}`
   return fetch(url).then(it => it.json())
 }
 
-function getPictures({ name: location, countryName }: any) {
+function getPictures({
+  name: location,
+  countryName
+}: any): Promise<PictureData[]> {
   const params = new URLSearchParams({
     location,
     countryName

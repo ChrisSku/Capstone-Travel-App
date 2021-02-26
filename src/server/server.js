@@ -57,56 +57,47 @@ app.get('/trips/pictures', async (req, res) => {
   res.json(pictureData)
 })
 
-const tripsData = {
-  'Spain 🇪🇸': {
-    locations: [
-      { location: 'Madrid', startDate: '2021-02-25', endDate: '2021-03-11' },
-      { location: 'Barcelona', startDate: '2021-03-12', endDate: '2021-03-18' },
-      { location: 'Valencia', startDate: '2021-03-19', endDate: '2021-03-23' },
-      { location: 'Seville', startDate: '2021-03-24', endDate: '2021-04-01' }
-    ],
-    packingList: []
+const tripsData = [
+  {
+    id: 0,
+    location: 'Bonança',
+    startDate: '2021-04-02',
+    endDate: '2021-04-11'
   },
-  'America 🌎': {
-    locations: [
-      { location: 'Bonança', startDate: '2021-02-25', endDate: '2021-03-11' }
-    ],
-    packingList: []
-  }
-}
+  { id: 1, location: 'Madrid', startDate: '2021-02-25', endDate: '2021-03-11' },
+  {
+    id: 2,
+    location: 'Barcelona',
+    startDate: '2021-03-12',
+    endDate: '2021-03-18'
+  },
+  {
+    id: 3,
+    location: 'Valencia',
+    startDate: '2021-03-19',
+    endDate: '2021-03-23'
+  },
+  { id: 4, location: 'Seville', startDate: '2021-03-24', endDate: '2021-04-01' }
+]
 
-app.get('/trips/saved', async (req, res) => {
+app.get('/trips/saved', (req, res) => {
   res.json(tripsData)
 })
 
-app.get('/trips/saved/names', async (req, res) => {
-  res.json(Object.keys(tripsData))
-})
-app.put('/trips/saved/names', async (req, res) => {
-  if (tripsData[req.body.name])
-    return res.status(409).send(req.body.name + ' does already exists!')
-  if (req.body.name === 'names')
-    return res.status(409).send(req.body.name + ' is an key name')
-  tripsData[req.body.name] = { locations: [], packingList: [] }
-  res.json(Object.keys(tripsData))
+app.get('/trips/saved/:name', (req, res) => {
+  res.send(tripsData.find(it => it.location === req.params.name))
 })
 
-app.put('/trips/saved/:name/locations', async (req, res) => {
-  tripsData[req.params.name].locations.push(req.body)
-  res.send()
+app.put('/trips/saved', (req, res) => {
+  tripsData.push({
+    ...req.body,
+    id: Math.max(...tripsData.map(it => it.id)) + 1
+  })
+  res.sendStatus(201)
 })
 
-app.put('/trips/saved/:name', async (req, res) => {
-  tripsData[req.params.name].push(req.body)
-  res.send()
-})
-
-app.get('/trips/saved/:name', async (req, res) => {
-  res.json(tripsData[req.params.name])
-})
-
-app.delete('/trips/saved/:name', async (req, res) => {
-  delete tripsData[req.params.name]
+app.delete('/trips/saved/:id', (req, res) => {
+  tripsData.splice(req.params.id, 1)
   res.sendStatus(202)
 })
 

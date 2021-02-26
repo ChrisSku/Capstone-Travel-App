@@ -1,7 +1,6 @@
 import { render } from 'lit-html'
 import { loader } from './ts/pageLoader'
 const home = () => import('./ts/home')
-const bestPlaces = () => import('./ts/bestPlaces')
 const savedPlaces = () => import('./ts/savedPlaces')
 
 import './styles/base.scss'
@@ -32,8 +31,6 @@ function loadPage() {
   render(loader(), main)
   path = window.location.pathname
   setActiveNav()
-  if (path.endsWith('/best-places.html'))
-    return bestPlaces().then(it => it.init())
   if (path.endsWith('/saved-places.html'))
     return savedPlaces().then(it => it.init())
   home().then(it => it.init())
