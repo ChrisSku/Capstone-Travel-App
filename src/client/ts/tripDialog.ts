@@ -1,14 +1,10 @@
-import {
-  addEventListenerById,
-  getInputById,
-  startDateInput,
-  endDateInput,
-  getDefaultEndDate,
-  converDateToSring
-} from './helperFunctions'
+import * as _ from './helperFunctions'
 import { html, render } from 'lit-html'
-import { saveTripLocationByName } from './apiHandler'
+import { createTrip, Trip } from './apiHandler'
 import '../styles/tripDialog.scss'
+
+const close = () =>
+  document.getElementById('dialogBackGround')?.classList.add('hidden')
 
 const create = () => {
   const dialogTemplate = `<div class="dialog-background hidden" id="dialogBackGround"></div>`
@@ -18,23 +14,15 @@ const create = () => {
 
 const addEvents = (dialog: HTMLElement) => {
   dialog.addEventListener('click', (event: MouseEvent) => {
-    if (event.target === dialog) closeDialog()
+    if (event.target === dialog) close()
   })
-  addEventListenerById('saveButton', 'click', saveTrip)
-  addEventListenerById('closeButton', 'click', closeDialog)
-  addEventListenerById('tripNameContainer', 'click', enableSaveButton)
+  _.addEventListenerById('saveButton', 'click', save)
+  _.addEventListenerById('closeButton', 'click', close)
 }
 
-const enableSaveButton = (event: MouseEvent) =>
-  event.target instanceof HTMLInputElement &&
-  document.getElementById('saveButton')?.classList.remove('disabled')
-
-const closeDialog = () =>
-  document.getElementById('dialogBackGround')?.classList.add('hidden')
-
-async function showDialog(location: string, dialog: HTMLElement) {
-  const startDate = startDateInput()?.value || converDateToSring(new Date())
-  const endDate = endDateInput()?.value || getDefaultEndDate
+const showDialog = async (location: string, dialog: HTMLElement) => {
+  const startDate = _.startDateInput()?.value || _.converDateToSring(new Date())
+  const endDate = _.endDateInput()?.value || _.getDefaultEndDate
   const content = html`<div class="trip-dialog" id="tripDialog">
     <h3>Add <span id="locationDialog">${location}</span> to your Trips</h3>
     <div class="trip-data">
@@ -52,24 +40,19 @@ async function showDialog(location: string, dialog: HTMLElement) {
   dialog.classList.remove('hidden')
 }
 
-function saveTrip() {
+const save = () => {
   const saveButtton = document.getElementById('saveButton')
   if (saveButtton?.classList.contains('disabled')) return
-  const startDate = getInputById('startDateDialog').value
-  const endDate = getInputById('endDateDialog').value
-  const location = document.getElementById('locationDialog')?.innerText
-  const data = { location, startDate, endDate }
-  const radioTripInputs = Array.from(
-    document.querySelectorAll("[name='savedTrips']")
-  )
-  const checkedValue = radioTripInputs.find(
-    (it: HTMLInputElement) => it.checked
-  ) as HTMLInputElement
-  saveTripLocationByName(checkedValue.value, data)
-  closeDialog()
+  const startDate = _.getInputById('startDateDialog').value
+  const endDate = _.getInputById('endDateDialog').value
+  const location = document.getElementById('locationDialog')?.innerText ?? ''
+  const data: Trip = { id: -1, location, startDate, endDate }
+  // TODO: if not succesful
+  createTrip(data)
+  close()
 }
 
-export async function open(location: string) {
+export const open = async (location: string) => {
   const exists = document.getElementById('dialogBackGround')
   const dialog = exists || create()
   await showDialog(location, dialog)

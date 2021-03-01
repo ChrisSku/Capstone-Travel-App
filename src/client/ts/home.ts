@@ -5,6 +5,7 @@ import { renderTrip } from './tripData'
 import { renderBestPlaces } from './bestPlaces'
 
 import '../styles/main-home.scss'
+import { Trip } from './apiHandler'
 
 const welcomeBannerTemp = html`<div id="welcome" class="active">
   Welcome to <br />
@@ -46,7 +47,13 @@ const addEventListener = () => {
     event.preventDefault()
     welcomeBanner?.classList.add('hide')
     render(loader(), searchResult!)
-    renderTrip(placeInput.value, 'searchTrip', searchResult!)
+    const trip: Trip = {
+      id: -1,
+      location: placeInput.value,
+      startDate: _.startDateInput().value,
+      endDate: _.endDateInput().value
+    }
+    renderTrip(trip, searchResult!)
   })
 
   welcomeBanner?.addEventListener('animationend', event => {

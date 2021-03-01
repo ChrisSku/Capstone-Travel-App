@@ -20,7 +20,7 @@ const endDateInput = () => getInputById('endDateInput')
 
 const getDefaultEndDate = (() => {
   const date = new Date()
-  date.setDate(date.getDate() + 14)
+  date.setDate(date.getDate() + 15)
   return converDateToSring(date)
 })()
 

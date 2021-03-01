@@ -5,22 +5,34 @@ const BASE_URL = 'https://api.weatherbit.io/v2.0'
 
 const mockData = require('./mock.json')
 
-function forecastByCity(city, country) {
-    const dataFromMock = mockData[city]
-    if (dataFromMock) {
-        console.log('Used Mock: ' + city)
-        return Promise.resolve(dataFromMock)
-    }
-    const url = `${BASE_URL}/forecast/daily?city=${city}&country=${country}&key=${API_KEY}`
-    return axios.get(url).then(({ data }) => data)
+const getMockData = (lat, long) =>
+  mockData.find(it => it.lon === String(long) && it.lat === String(lat))
+
+const getHistoryDateSring = (inputDateString, offset = 0) => {
+  const date = new Date(inputDateString)
+  date.setFullYear(date.getFullYear() - 1)
+  date.setDate(date.getDate() + offset)
+  return date.toISOString().substring(0, 10)
+}
+
+function historyByLocation(lat, long, date) {
+  const start = getHistoryDateSring(date)
+  const end = getHistoryDateSring(date, 1)
+  const url = `${BASE_URL}/history/daily?lat=${lat}&lon=${long}&start_date=${start}&end_date=${end}&key=${API_KEY}`
+  return axios.get(url).then(({ data }) => data)
 }
 
 function forecastByLocation(lat, long) {
-    const url = `${BASE_URL}/forecast/daily?&lat=${lat}&lon=${long}&key=${API_KEY}`
-    return axios.get(url).then(({ data }) => data)
+  const mockDataByLoc = getMockData(lat, long)
+  if (mockDataByLoc) {
+    console.log('use Mock for: ' + mockDataByLoc.city_name)
+    return Promise.resolve(mockDataByLoc)
+  }
+  const url = `${BASE_URL}/forecast/daily?&lat=${lat}&lon=${long}&key=${API_KEY}`
+  return axios.get(url).then(({ data }) => data)
 }
 
 module.exports = {
-    forecastByCity,
-    forecastByLocation
+  historyByLocation,
+  forecastByLocation
 }

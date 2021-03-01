@@ -36,6 +36,15 @@
       &:active {
         box-shadow: 0 0 4px 0 black inset;
       }
+      &.open-trip {
+        margin-left: 8px;
+        background-color: hsla(0, 0%, 100%, 0.9);
+      }
+
+      &.delete-trip {
+        margin-left: 8px;
+        background-color: hsla(0, 100%, 80%, 0.9);
+      }
     }
   }
 
@@ -59,7 +68,7 @@
       display: grid;
       background-image: linear-gradient(
         90deg,
-        rgba(255, 255, 255, 0.75) 30%,
+        rgba(255, 255, 255, 0.75) 40%,
         rgba(255, 255, 255, 0)
       );
       grid-template-areas:
@@ -72,12 +81,17 @@
       &:nth-child(even) {
         margin: 0 12px;
       }
+      .date {
+        grid-area: w-date;
+      }
       color: hsl(0, 0%, 25%);
       font-size: 0.75em;
       text-shadow: none;
       .temp {
+        grid-area: w-temp;
+        align-self: center;
         color: hsl(0, 0%, 15%);
-        font-size: 1.6em;
+        font-size: 1.7em;
       }
       .temp-range {
         grid-area: w-temp-range;

@@ -15,6 +15,7 @@ interface WeatherIcon {
 }
 
 interface DateWeatherData {
+  clouds: number
   max_temp: number
   temp: number
   min_temp: number
@@ -33,75 +34,55 @@ interface PictureData {
   previewURL: string
 }
 
-type Location = {
+type Trip = {
+  id: number
   location: string
   startDate: string
   endDate: string
-}
-
-type Trip = {
-  locations: Location[]
-  packingList: string[]
 }
 
 const locationDataUrl = `${BACKEND_BASE_URL}/trips/locations?location=`
 const getLocationData = (location: string): Promise<LocationData> =>
   fetch(locationDataUrl + location).then(it => it.json())
 
-function getWeatherData({
-  name: location,
-  countryCode,
-  lat,
-  lng: long
-}: LocationData): Promise<WeatherData> {
-  const params = new URLSearchParams({ location, countryCode, lat, long })
+function getWeatherData(locationData: LocationData): Promise<WeatherData> {
+  const { lat, lng } = locationData
+  const params = new URLSearchParams({ lat, lng })
   const url = `${BACKEND_BASE_URL}/trips/weather?${params}`
   return fetch(url).then(it => it.json())
 }
 
-function getPictures({
-  name: location,
-  countryName
-}: any): Promise<PictureData[]> {
-  const params = new URLSearchParams({
-    location,
-    countryName
-  })
+function getEstimatedWeatherData(
+  locationData: LocationData,
+  date: string
+): Promise<WeatherData> {
+  const { lat, lng } = locationData
+  const params = new URLSearchParams({ lat, lng, date })
+  const url = `${BACKEND_BASE_URL}/trips/weather/history?${params}`
+  return fetch(url).then(it => it.json())
+}
+
+function getPictures({ name, countryName }: any): Promise<PictureData[]> {
+  const params = new URLSearchParams({ name, countryName })
   const url = `${BACKEND_BASE_URL}/trips/pictures?${params}`
   return fetch(url).then(it => it.json())
 }
 
-function getSavedTrips(): Promise<{ [name: string]: Trip }> {
-  const url = `${BACKEND_BASE_URL}/trips/saved`
-  return fetch(url).then(it => it.json())
+const savedTripUrl = `${BACKEND_BASE_URL}/trips/saved`
+
+const getSavedTrips = (): Promise<Trip[]> => {
+  return fetch(savedTripUrl).then(it => it.json())
 }
 
-function getSavedTripNames(): Promise<string[]> {
-  const url = `${BACKEND_BASE_URL}/trips/saved/names`
-  return fetch(url).then(it => it.json())
-}
-
-function saveTripName(name: string): Promise<string[]> {
-  const url = `${BACKEND_BASE_URL}/trips/saved/names`
-  return fetch(url, {
-    method: 'PUT',
-    body: JSON.stringify({ name }),
-    headers: { 'Content-Type': 'application/json' }
-  }).then(it => it.json())
-}
-
-function saveTripLocationByName(name: string, data: any) {
-  const url = `${BACKEND_BASE_URL}/trips/saved/${name}/locations`
-  return fetch(url, {
-    method: 'PUT',
+const createTrip = (data: Trip) =>
+  fetch(savedTripUrl, {
+    method: 'POST',
     body: JSON.stringify(data),
     headers: { 'Content-Type': 'application/json' }
   })
-}
 
-function deleteTripByName(name: string) {
-  const url = `${BACKEND_BASE_URL}/trips/saved/${name}`
-  return fetch(url, { method: 'DELETE' })
+const deleteTripById = (id: number) => {
+  return fetch(`${savedTripUrl}/${id}`, { method: 'DELETE' })
 }
 
 export {
@@ -110,13 +91,11 @@ export {
   DateWeatherData,
   PictureData,
   Trip,
-  Location,
   getLocationData,
   getWeatherData,
   getPictures,
-  getSavedTripNames,
-  saveTripName,
-  saveTripLocationByName,
+  createTrip,
   getSavedTrips,
-  deleteTripByName
+  deleteTripById,
+  getEstimatedWeatherData
 }

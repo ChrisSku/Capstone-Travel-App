@@ -27,28 +27,32 @@ app.get('/trips/locations', async (req, res) => {
 })
 
 app.get('/trips/weather', async (req, res) => {
-  const location = req.query.location
-  const countryCode = req.query.countryCode
   const lat = req.query.lat
-  const long = req.query.long
-  let weatherData
+  const long = req.query.lng
   try {
-    if (location)
-      weatherData = await weatherbit.forecastByCity(location, countryCode)
-    if (!weatherData && lat && long)
-      weatherData = await weatherbit.forecastByLocation(lat, long)
-  } catch (_) {
-    weatherData = await weatherbit.forecastByLocation(lat, long)
+    res.json(await weatherbit.forecastByLocation(lat, long))
+  } catch (error) {
+    res.status(error.response.status).send(error.response.data.status_message)
   }
-  res.json(weatherData)
+})
+
+app.get('/trips/weather/history', async (req, res) => {
+  const lat = req.query.lat
+  const long = req.query.lng
+  const date = req.query.date
+  try {
+    res.json(await weatherbit.historyByLocation(lat, long, date))
+  } catch (error) {
+    res.status(error.response.status).send(error.response.data.status_message)
+  }
 })
 
 app.get('/trips/pictures', async (req, res) => {
-  const location = req.query.location
+  const name = req.query.name
   const countryName = req.query.countryName
   let pictureData = []
   try {
-    if (location) pictureData = await pixabay.getPicturesByName(location)
+    if (name) pictureData = await pixabay.getPicturesByName(name)
     if (!pictureData.length && countryName)
       pictureData = await pixabay.getPicturesByName(countryName)
   } catch (_) {
@@ -65,18 +69,6 @@ const tripsData = [
     endDate: '2021-04-11'
   },
   { id: 1, location: 'Madrid', startDate: '2021-02-25', endDate: '2021-03-11' },
-  {
-    id: 2,
-    location: 'Barcelona',
-    startDate: '2021-03-12',
-    endDate: '2021-03-18'
-  },
-  {
-    id: 3,
-    location: 'Valencia',
-    startDate: '2021-03-19',
-    endDate: '2021-03-23'
-  },
   { id: 4, location: 'Seville', startDate: '2021-03-24', endDate: '2021-04-01' }
 ]
 
@@ -88,7 +80,7 @@ app.get('/trips/saved/:name', (req, res) => {
   res.send(tripsData.find(it => it.location === req.params.name))
 })
 
-app.put('/trips/saved', (req, res) => {
+app.post('/trips/saved', (req, res) => {
   tripsData.push({
     ...req.body,
     id: Math.max(...tripsData.map(it => it.id)) + 1
@@ -96,8 +88,17 @@ app.put('/trips/saved', (req, res) => {
   res.sendStatus(201)
 })
 
+app.put('/trips/saved', (req, res) => {
+  const data = req.body
+  const index = tripsData.findIndex(it => it.id === data.id)
+  if (index === -1) return res.status(404).send('trip not found')
+  tripsData[index] = data
+  res.sendStatus(202)
+})
+
 app.delete('/trips/saved/:id', (req, res) => {
-  tripsData.splice(req.params.id, 1)
+  const index = tripsData.findIndex(it => it.id === parseInt(req.params.id))
+  tripsData.splice(index, 1)
   res.sendStatus(202)
 })
 
