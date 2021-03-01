@@ -37,7 +37,6 @@
         box-shadow: 0 0 4px 0 black inset;
       }
       &.open-trip {
-        margin-left: 8px;
         background-color: hsla(0, 0%, 100%, 0.9);
       }
 
@@ -49,6 +48,7 @@
   }
 
   .country-header {
+    margin-top: auto;
     grid-area: country-header;
     font-size: 0.7em;
   }
@@ -106,22 +106,34 @@
 
   &.medium {
     grid-template-rows: 40px min-content min-content 1fr;
+    .trip-actions {
+      justify-content: flex-start;
+      margin-bottom: 10px;
+    }
     @media (min-width: 768px) and (max-width: 1099px) {
       grid-template-rows: 1fr min-content min-content;
       grid-template-columns: 200px auto;
-      grid-template-areas: 'actions weather' 'country-header weather' 'location-name weather';
-      .trip-actions {
-        justify-content: flex-start;
-        margin-bottom: 10px;
-      }
+      grid-template-areas: 'actions actions' 'country-header weather' 'location-name weather';
     }
     @media (min-width: 1600px) {
       grid-template-rows: 1fr min-content min-content;
       grid-template-columns: 200px auto;
-      grid-template-areas: 'actions weather' 'country-header weather' 'location-name weather';
-      .trip-actions {
-        justify-content: flex-start;
-        margin-bottom: 10px;
+      grid-template-areas: 'actions actions' 'country-header weather' 'location-name weather';
+    }
+
+    &.saved {
+      grid-template-areas: 'actions trip-date' 'country-header country-header' 'location-name location-name' 'weather weather';
+      @media (min-width: 768px) and (max-width: 1099px) {
+        grid-template-areas: 'actions trip-date' 'country-header weather' 'location-name weather';
+      }
+      @media (min-width: 1600px) {
+        grid-template-areas: 'actions trip-date' 'country-header weather' 'location-name weather';
+      }
+      .trip-date {
+        grid-area: trip-date;
+        p {
+          margin: 0;
+        }
       }
     }
   }
@@ -152,6 +164,17 @@
         height: 180px;
         &:nth-child(even) {
           margin: 0 8px;
+        }
+      }
+    }
+
+    &.saved {
+      grid-template-areas: 'trip-date' 'country-header' 'location-name' 'weather-label' 'weather' 'galery-label' 'picture-galery' 'content';
+      .trip-date {
+        grid-area: trip-date;
+        justify-self: end;
+        p {
+          margin: 0;
         }
       }
     }

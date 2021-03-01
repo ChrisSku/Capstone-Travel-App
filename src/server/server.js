@@ -37,9 +37,7 @@ app.get('/trips/weather', async (req, res) => {
 })
 
 app.get('/trips/weather/history', async (req, res) => {
-  const lat = req.query.lat
-  const long = req.query.lng
-  const date = req.query.date
+  const { lat, lng: long, date } = req.query
   try {
     res.json(await weatherbit.historyByLocation(lat, long, date))
   } catch (error) {
@@ -61,7 +59,7 @@ app.get('/trips/pictures', async (req, res) => {
   res.json(pictureData)
 })
 
-const tripsData = [
+let tripsData = [
   {
     id: 0,
     location: 'Bonança',
@@ -90,15 +88,16 @@ app.post('/trips/saved', (req, res) => {
 
 app.put('/trips/saved', (req, res) => {
   const data = req.body
-  const index = tripsData.findIndex(it => it.id === data.id)
-  if (index === -1) return res.status(404).send('trip not found')
+  const index = tripsData.findIndex(it => it.id !== data.id)
+
   tripsData[index] = data
   res.sendStatus(202)
 })
 
 app.delete('/trips/saved/:id', (req, res) => {
   const index = tripsData.findIndex(it => it.id === parseInt(req.params.id))
-  tripsData.splice(index, 1)
+  if (index === -1) return res.status(404).send('trip not found')
+  tripsData = tripsData.filter(it => it.id !== parseInt(req.params.id))
   res.sendStatus(202)
 })
 

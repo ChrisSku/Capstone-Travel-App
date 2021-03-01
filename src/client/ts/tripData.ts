@@ -18,6 +18,27 @@ const getTripHtml = ({ name, countryName }: api.LocationData, key: number) =>
     <div class="picture-galery"></div>
   </div>`
 
+const getSavedTripHtml = (
+  { name, countryName }: api.LocationData,
+  trip: api.Trip
+) =>
+  html`<div id="${trip.id}-place" class="trip-element huge saved">
+    <div class="trip-date">
+      <p>${getDepartText(trip.startDate, trip.endDate)}</p>
+      <p>
+        ${_.converStringToLocaledDate(
+          trip.startDate
+        )}-${_.converStringToLocaledDate(trip.endDate)}
+      </p>
+    </div>
+    <div class="country-header">${countryName}</div>
+    <div class="location-name">${name}</div>
+    <label class="weather-label">Weather</label>
+    <div class="weather-data"></div>
+    <label class="galery-label">Galery</label>
+    <div class="picture-galery"></div>
+  </div>`
+
 const getMediumTripHtml = (
   { name, countryName }: api.LocationData,
   key: string
@@ -31,14 +52,38 @@ const getMediumTripHtml = (
     <div class="weather-data"></div>
   </div>`
 
+const getDatesUntilTrip = (startDateString: string) => {
+  const currentDate = new Date().getTime()
+  const startDate = new Date(startDateString).getTime()
+  return Math.trunc((startDate - currentDate) / (24 * 3600 * 1000))
+}
+
+const getDepartText = (startDateString: string, endDateString: string) => {
+  const daysUntilDeparting = getDatesUntilTrip(startDateString)
+  const endDateTime = getDatesUntilTrip(endDateString)
+  if (endDateTime < 0) return 'Trip is allready over'
+  if (endDateTime === 0) return 'Trip ends today'
+  if (daysUntilDeparting < 0) return 'Trip is allready ongoing!'
+  if (daysUntilDeparting === 0) return 'Trip start today!'
+  return `Trip starts in ${daysUntilDeparting} days`
+}
+
 const getSavedMediumTripHtml = (
   { name, countryName }: api.LocationData,
-  key: string
+  trip: api.Trip
 ) =>
-  html`<div id=${key} class="trip-element medium">
+  html`<div id="${trip.id}-place" class="trip-element medium saved">
     <div class="trip-actions" id="buttonCountainer">
-      <button class="open-trip" key=${key.split('-')[0]}>Open</button>
-      <button class="delete-trip" key=${key.split('-')[0]}>DELETE</button>
+      <button class="open-trip" key="${trip.id}">Open</button>
+      <button class="delete-trip" key="${trip.id}">DELETE</button>
+    </div>
+    <div class="trip-date">
+      <p>${getDepartText(trip.startDate, trip.endDate)}</p>
+      <p>
+        ${_.converStringToLocaledDate(
+          trip.startDate
+        )}-${_.converStringToLocaledDate(trip.endDate)}
+      </p>
     </div>
     <div class="country-header">${countryName}</div>
     <div class="location-name">${name}</div>
@@ -141,6 +186,16 @@ export async function renderTrip(trip: api.Trip, element: Element) {
   buttonEventAddTrip(locationData.name, tripElementContainter)
 }
 
+export async function renderSavedTrip(trip: api.Trip, element: Element) {
+  const locationData = await api.getLocationData(trip.location)
+  render(getSavedTripHtml(locationData, trip), element)
+  const tripElementContainter = document.getElementById(`${trip.id}-place`)!
+  renderPicture(locationData, tripElementContainter, true)
+  const { startDate, endDate } = trip
+  renderWeather(locationData, tripElementContainter, startDate, endDate)
+  buttonEventAddTrip(locationData.name, tripElementContainter)
+}
+
 export function renderTripList(locations: string[], element: Element) {
   const trips: TemplateResult[] = []
   locations.forEach(async (it, i) => {
@@ -158,7 +213,7 @@ export async function renderSavedTripList(trips: api.Trip[], element: Element) {
   const tripsHtml: TemplateResult[] = []
   for (const trip of trips) {
     const locationData = await api.getLocationData(trip.location)
-    tripsHtml.push(getSavedMediumTripHtml(locationData, trip.id + '-place'))
+    tripsHtml.push(getSavedMediumTripHtml(locationData, trip))
     render(tripsHtml, element)
     const tripElementContainter = document.getElementById(trip.id + '-place')!
     const { startDate, endDate } = trip
