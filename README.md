@@ -26,4 +26,6 @@ Also I tried to create a Single Page Application and use Lazy loading to enhance
 
 ## Additional Information:
 
-For Further dates (greater then 16 days) the [Meteostat-API](https://dev.meteostat.net/api/stations/climate.html) will be used to get the monthly climate data.
+For code formating prettier is used.
+
+There a lot of pitfalls when using TS in frontend but still want to use JS in backend. Especially when testing both with on Jest configuration
