@@ -1,4 +1,4 @@
-const BACKEND_BASE_URL = ''
+const BACKEND_BASE_URL = 'http://localhost:3000'
 interface LocationData {
   name: string
   countryName: string
