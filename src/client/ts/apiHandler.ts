@@ -24,7 +24,6 @@ interface DateWeatherData {
 }
 
 interface WeatherData {
-  timezone: string
   data: DateWeatherData[]
 }
 
