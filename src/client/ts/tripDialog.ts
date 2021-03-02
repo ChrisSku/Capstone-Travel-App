@@ -47,7 +47,6 @@ const save = () => {
   const endDate = _.getInputById('endDateDialog').value
   const location = document.getElementById('locationDialog')?.innerText ?? ''
   const data: Trip = { id: -1, location, startDate, endDate }
-  // TODO: if not succesful
   createTrip(data)
   close()
 }

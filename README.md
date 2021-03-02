@@ -29,3 +29,7 @@ Also I tried to create a Single Page Application and use Lazy loading to enhance
 For code formating prettier is used.
 
 There a lot of pitfalls when using TS in frontend but still want to use JS in backend. Especially when testing both with on Jest configuration
+
+Pictures are form [Pixabay](https://pixabay.com/)  
+Weatherdata is from [Weatherbit](https://www.weatherbit.io/)  
+Locationdata is from [GeoNames](https://www.geonames.org/)
