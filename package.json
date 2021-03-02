@@ -1,4 +1,7 @@
 {
+  "engines": {
+    "node": "14.x"
+  },
   "name": "capstone-travel-app",
   "version": "1.0.0",
   "description": "Capstone - Travel App Udemy course",
