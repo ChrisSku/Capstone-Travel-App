@@ -1,4 +1,4 @@
-const BACKEND_BASE_URL = 'http://localhost:3000'
+const BACKEND_BASE_URL = ''
 interface LocationData {
   name: string
   countryName: string
@@ -84,6 +84,9 @@ const deleteTripById = (id: number) => {
   return fetch(`${savedTripUrl}/${id}`, { method: 'DELETE' })
 }
 
+const getBestPlaces = () =>
+  fetch(BACKEND_BASE_URL + '/trips/best-places').then(it => it.json())
+
 export {
   LocationData,
   WeatherData,
@@ -96,5 +99,6 @@ export {
   createTrip,
   getSavedTrips,
   deleteTripById,
-  getEstimatedWeatherData
+  getEstimatedWeatherData,
+  getBestPlaces
 }
