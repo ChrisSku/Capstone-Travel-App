@@ -7,6 +7,7 @@ const geoNames = require('./geoNames.js')
 const weatherbit = require('./weatherbit.js')
 const pixabay = require('./pixabay.js')
 
+// Initiat the server app config
 const app = express()
 app.use(cors())
 app.use(bodyParser.json())
@@ -17,6 +18,20 @@ app.use(
 )
 app.use(express.static('dist'))
 
+// trips data object
+let tripsData = [
+  {
+    id: 0,
+    location: 'Bonança',
+    startDate: '2021-04-02',
+    endDate: '2021-04-11'
+  },
+  { id: 1, location: 'Madrid', startDate: '2021-02-25', endDate: '2021-03-11' },
+  { id: 4, location: 'Seville', startDate: '2021-03-24', endDate: '2021-04-01' }
+]
+
+// ---
+// rest halnding
 app.get('/trips/best-places', (req, res) => {
   res.json(['Madrid', 'kuala lumpur', 'Singapur', 'manhattan', 'brooklyn'])
 })
@@ -58,17 +73,6 @@ app.get('/trips/pictures', async (req, res) => {
   res.json(pictureData)
 })
 
-let tripsData = [
-  {
-    id: 0,
-    location: 'Bonança',
-    startDate: '2021-04-02',
-    endDate: '2021-04-11'
-  },
-  { id: 1, location: 'Madrid', startDate: '2021-02-25', endDate: '2021-03-11' },
-  { id: 4, location: 'Seville', startDate: '2021-03-24', endDate: '2021-04-01' }
-]
-
 app.get('/trips/saved', (req, res) => {
   res.json(tripsData)
 })
@@ -99,5 +103,6 @@ app.delete('/trips/saved/:id', (req, res) => {
   tripsData = tripsData.filter(it => it.id !== parseInt(req.params.id))
   res.sendStatus(202)
 })
+// ---
 
 module.exports = app

@@ -1,3 +1,7 @@
+/*
+ This module contain helper function which are used in more places.
+*/
+
 const getInputById = (id: string) =>
   document.getElementById(id) as HTMLInputElement
 

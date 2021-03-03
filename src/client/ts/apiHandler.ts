@@ -1,3 +1,7 @@
+/*
+ this module handles all the requests to the server
+ */
+
 const BACKEND_BASE_URL = 'http://localhost:3000'
 interface LocationData {
   name: string

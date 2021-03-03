@@ -15,7 +15,7 @@ describe('get input by id', () => {
 describe('add EventListener by id', () => {
   it('function exists', () => expect(_.addEventListenerById).toBeDefined())
 
-  it('expect event to be called', () => {
+  it('expect event to be', () => {
     const inputElement = "<button id='buttonTest'>Test</button>"
     document.body.insertAdjacentHTML('afterbegin', inputElement)
     const handler = jest.fn()

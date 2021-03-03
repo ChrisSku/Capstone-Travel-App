@@ -1,3 +1,7 @@
+/*
+  this module handles all the requests to the geonames api
+*/
+
 const axios = require('axios')
 
 const API_KEY = process.env.GEO_NAMES_USERNAME

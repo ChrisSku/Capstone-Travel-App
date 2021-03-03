@@ -1,3 +1,8 @@
+/*
+  The index.ts file is the anchor point of the clientside code.
+  It includes a basic router for the main (/) and the saved-places (/saved-places) sides
+*/
+
 import { render } from 'lit-html'
 import { loader } from './ts/pageLoader'
 const home = () => import('./ts/home')
@@ -7,17 +12,31 @@ import './styles/base.scss'
 import './styles/header.scss'
 import './styles/loader.scss'
 
+const main = document.querySelector('main')!
+const navbar = document.querySelector('nav')
+let path: string = location.pathname
+
+// return the basePath on first time loading
 const basePath = (() => {
-  let paths = window.location.pathname.split('/')
+  let paths = location.pathname.split('/')
   paths.pop()
   return paths.join('/')
 })()
 
-let path: string = window.location.pathname
+/**
+ * This is the router which will change the content of the side
+ * depending on the location
+ */
+function router() {
+  render(loader(), main)
+  path = location.pathname
+  setActiveNav()
+  if (path.endsWith('/saved-places.html'))
+    return savedPlaces().then(it => it.init())
+  home().then(it => it.init())
+}
 
-const main = document.querySelector('main')!
-const navbar = document.querySelector('nav')
-
+// add to one of the Navbar items the active class
 function setActiveNav() {
   const navItems = navbar?.querySelectorAll('.nav-item')!
   for (let i = 0; i < navItems.length; i++) {
@@ -27,19 +46,10 @@ function setActiveNav() {
   }
 }
 
-function loadPage() {
-  render(loader(), main)
-  path = window.location.pathname
-  setActiveNav()
-  if (path.endsWith('/saved-places.html'))
-    return savedPlaces().then(it => it.init())
-  home().then(it => it.init())
-}
-
 function movePage(link: string) {
   if (path !== link || path === '/') {
     history.pushState({}, link.substr(1), basePath + link)
-    loadPage()
+    router()
   }
 }
 
@@ -48,10 +58,14 @@ navbar!.addEventListener('click', (e: MouseEvent) => {
     .filter(it => it instanceof HTMLLIElement)
     .forEach((it: HTMLLIElement) => movePage(it.getAttribute('href')!))
 })
-
-window.onpopstate = loadPage
-loadPage()
-
 document
   .getElementById('pixabaylogo')
   ?.addEventListener('click', () => window.open('https://pixabay.com'))
+
+/**
+ * overrides the onpopstate that the browser should not reload
+ * the whole page only the content -> an SPA approache
+ */
+window.onpopstate = router
+// opens current content
+router()

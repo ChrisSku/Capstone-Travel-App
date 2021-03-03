@@ -5,6 +5,22 @@ import * as api from './apiHandler'
 
 import '../styles/trip.scss'
 
+const getDatesUntilTrip = (startDateString: string) => {
+  const currentDate = new Date().getTime()
+  const startDate = new Date(startDateString).getTime()
+  return Math.trunc((startDate - currentDate) / (24 * 3600 * 1000))
+}
+
+const getDepartText = (startDateString: string, endDateString: string) => {
+  const daysUntilDeparting = getDatesUntilTrip(startDateString)
+  const endDateTime = getDatesUntilTrip(endDateString)
+  if (endDateTime < 0) return 'Trip is allready over'
+  if (endDateTime === 0) return 'Trip ends today'
+  if (daysUntilDeparting < 0) return 'Trip is allready ongoing!'
+  if (daysUntilDeparting === 0) return 'Trip start today!'
+  return `Trip starts in ${daysUntilDeparting} days`
+}
+
 const getTripHtml = ({ name, countryName }: api.LocationData, key: number) =>
   html`<div id="${key}-place" class="trip-element huge">
     <div class="trip-actions" id="buttonCountainer">
@@ -51,22 +67,6 @@ const getMediumTripHtml = (
     <div class="location-name">${name}</div>
     <div class="weather-data"></div>
   </div>`
-
-const getDatesUntilTrip = (startDateString: string) => {
-  const currentDate = new Date().getTime()
-  const startDate = new Date(startDateString).getTime()
-  return Math.trunc((startDate - currentDate) / (24 * 3600 * 1000))
-}
-
-const getDepartText = (startDateString: string, endDateString: string) => {
-  const daysUntilDeparting = getDatesUntilTrip(startDateString)
-  const endDateTime = getDatesUntilTrip(endDateString)
-  if (endDateTime < 0) return 'Trip is allready over'
-  if (endDateTime === 0) return 'Trip ends today'
-  if (daysUntilDeparting < 0) return 'Trip is allready ongoing!'
-  if (daysUntilDeparting === 0) return 'Trip start today!'
-  return `Trip starts in ${daysUntilDeparting} days`
-}
 
 const getSavedMediumTripHtml = (
   { name, countryName }: api.LocationData,
@@ -176,6 +176,9 @@ const buttonEventAddTrip = (location: string, parent: Element) => {
   )
 }
 
+/* 
+  render functions
+*/
 export async function renderTrip(trip: api.Trip, element: Element) {
   const locationData = await api.getLocationData(trip.location)
   render(getTripHtml(locationData, trip.id), element)

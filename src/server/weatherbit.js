@@ -1,3 +1,7 @@
+/*
+  this module handles all the requests to the weatherbit api
+*/
+
 const axios = require('axios')
 
 const API_KEY = process.env.WHEATER_BIT_API_KEY
