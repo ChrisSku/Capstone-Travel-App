@@ -1,3 +1,6 @@
+/* 
+  Starts the server @port
+*/
 const app = require('../server/app')
 const port = 3000
 

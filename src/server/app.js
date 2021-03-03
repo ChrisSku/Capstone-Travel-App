@@ -31,7 +31,7 @@ let tripsData = [
 ]
 
 // ---
-// rest halnding
+// rest handling
 app.get('/trips/best-places', (req, res) => {
   res.json(['Madrid', 'kuala lumpur', 'Singapur', 'manhattan', 'brooklyn'])
 })
